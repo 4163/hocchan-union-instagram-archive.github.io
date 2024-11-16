@@ -15,10 +15,11 @@ body::before {
     position: absolute;
     top: 0;
     right: 0;
+    bottom: 0;
     left: 0;
     z-index: -1;
-    background: url('bg/1920.png') no-repeat top center; /* Aligns the image to the top */
-    background-size: cover; /* Ensures the image covers the viewport */
+    background: url('bg/1920.png') no-repeat center top;
+    background-size: cover;
     filter: brightness(35%);
     -webkit-tap-highlight-color: transparent; /* Removes tap highlight on mobile */
 }

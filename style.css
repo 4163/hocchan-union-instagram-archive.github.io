@@ -1,0 +1,476 @@
+body {
+	position: relative; display: flex; width: 100vw; height: 100vh;
+	justify-content: center; align-items: center; padding: 0; margin: 0;
+}
+
+body::before {
+	content: ''; position: absolute; top: 0; right: 0; bottom: 0; left: 0; z-index: -1;
+	background: url('bg/1920.png') no-repeat center top; background-size: cover; filter: brightness(35%);
+	-webkit-tap-highlight-color: transparent; /* Removes tap highlight on mobile */
+}
+
+a {
+	display: inline-block; text-decoration: none; color: inherit; padding: 0; margin: 0;
+}
+
+.image-slider-container {
+	display: flex;
+	width: 100%;
+	height: auto;
+	max-width: 75.6%;      /* Limit maximum width */
+	max-height: 95%;           /* Let height adjust to maintain aspect ratio */
+	aspect-ratio: 1421 / 921;
+	justify-content: flex-start;
+	align-items: stretch;
+	background-color: #transparent;
+	box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+	z-index: 1;
+	border-top-right-radius: 5px;
+	border-bottom-right-radius: 5px;
+	overflow: hidden;
+}
+
+.media-container {
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	flex-grow: 1;           /* Make it grow to fill remaining space */
+	height: 100%;
+	background-color: #000000;
+	position: relative;
+	z-index: 999;
+}
+
+.content-container {
+	display: flex;
+	flex-direction: column;
+	justify-content: flex-start;
+	width: 35.19%;
+	min-width: 277px;
+	padding: 10px 12px;
+	background-color: #ffffff;
+	height: 100%;
+	box-sizing: border-box;
+	font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+	position: relative;
+	border-left: 2px solid #efefef;
+	z-index: 998;
+}
+
+.media-container img, .media-container video {
+	max-width: 100%; max-height: 100%; object-fit: cover;
+}
+
+.button-media-container {
+	display: flex; justify-content: center; align-items: center;
+	position: relative; width: auto; height: 100%;
+}
+
+.footer {
+	display: flex; align-items: flex-start; position: absolute; bottom: 0; width: 100%;
+	padding-top: 10px; background-color: #ffffff; border-top: 2px solid #efefef;
+	font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+	flex-direction: column;
+}
+
+.likes, .comments {
+	font-size: 14px;
+}
+
+p.likes, p.comments {
+	margin: 0;
+}
+
+.timestamps {
+	color: #737373; font-size: 12px;
+}
+
+div.timestamps p {
+	margin-top: 2px; margin-bottom: 10px;
+}
+
+.profile-wrapper {
+	display: flex; align-items: flex-start; border-bottom: 2px solid #efefef; margin-bottom: 10px;
+}
+
+.profile-pic-wrapper {
+	position: relative;
+}
+
+.profile-pic-wrapper a {
+	display: block; width: 100%; height: 100%; border-radius: 50%; overflow: hidden;
+}
+
+.profile-pic {
+	width: 132px; height: 132px; border-radius: 50%; margin-top: 0; border: 1px solid #d4d8d7;
+}
+
+.profile-info {
+	margin-left: 12px; margin-top: 0; margin-bottom: 16px; line-height: 1.5;
+}
+
+.username {
+	font-size: 20px; font-weight: bold;
+}
+
+.spacing {
+	display: inline-block; margin-right: 24px; font-size: 14px;
+}
+
+.description {
+	font-size: 12px;
+}
+
+.button-container {
+	display: flex; justify-content: space-between; position: absolute; top: 50%; left: 0; right: 0;
+	transform: translateY(-50%); padding: 0 12px; z-index: 2;
+}
+
+/* General button styling */
+.style-button {
+	display: flex;
+	align-items: center;
+	background-color: #ffffff;
+	color: #000000;
+	border: none;
+	border-radius: 5px;
+	padding: 8px 16px;
+	font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+	font-weight: bold;
+	cursor: pointer;
+	transition: background-color 0.3s, opacity 0.3s;
+	height: 32px;
+}
+
+.style-button:hover {
+	opacity: 0.7;
+	background-color: #f0f0f0;
+}
+
+.style-button:active {
+	opacity: 0.5; /* Temporary change when clicked */
+	transition: opacity 0.1s; /* Shorter transition for click feedback */
+}
+
+/* Slider button styling */
+.slider-button {
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	width: 32px;
+	height: 32px;
+	background-color: #ffffff;
+	color: #000000;
+	border: none;
+	border-radius: 50%;
+	font-size: 24px;
+	cursor: pointer;
+	transition: background-color 0.3s, opacity 0.3s;
+}
+
+.slider-button:hover {
+	background-color: #f0f0f0;
+	opacity: 0.7;
+}
+
+.slider-button:active {
+	opacity: 0.5;
+	transition: opacity 0.1s;
+}
+
+/* Sidebar button styling */
+.button-sidebar {
+	display: flex;
+	flex-direction: column;
+	justify-content: center;
+	align-items: center;
+	position: relative;
+	width: 24px;
+	height: 100%;
+	background-color: transparent;
+	border-top-left-radius: 5px;
+	border-bottom-left-radius: 5px;
+	z-index: 997;
+}
+
+.sidebar-button {
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	width: 100%;
+	height: 50%;
+	background-color: #111111;
+	border: none;
+	cursor: pointer;
+	color: #eeeeee;
+	font-size: 24px;
+	transition: background-color 0.3s;
+}
+
+.sidebar-button:active {
+	background-color: #333333;
+	transition: background-color 0.1s;
+}
+
+.style-button:focus {
+    opacity: 1; /* Reset on focus */
+    background-color: #ffffff; /* Reset to original */
+}
+
+.slider-button:focus {
+    opacity: 1;
+    background-color: #ffffff;
+}
+
+.sidebar-button:focus {
+    background-color: #111111;
+}
+
+.s-left-button {
+	border-top-left-radius: 5px;
+}
+
+.s-right-button {
+	border-bottom-left-radius: 5px;
+}
+
+.sidebar-button:nth-child(1) {
+	border-bottom: 2px solid #dbdbdb;
+}
+
+.sidebar-button:hover {
+	background-color: #eeeeee; color: #111111;
+}
+
+.post-content-wrapper {
+	display: flex;
+}
+
+.comments-container {
+	display: flex; margin-left: 36px;
+}
+
+.post-title {
+	font-weight: bold; margin-bottom: 6px;
+}
+
+.post-content {
+	display: flex; flex-direction: column; font-size: 14px;
+}
+
+.profile-post {
+	width: 74px; height: 74px; border-radius: 50%; margin-top: 0; border: 1px solid #d4d8d7;
+}
+
+.posts-content-profile {
+	display: flex; justify-content: center; align-items: center; width: 74px; height: 74px;
+	border-radius: 50%; border: 1px solid #d4d8d7; overflow: hidden; flex-shrink: 0;
+}
+
+.posts-content-image {
+	width: 100%; height: auto; display: block;
+}
+
+.place-holder-posts {
+	width: 325px; height: 16px; background-color: #efefef; border-radius: 4px; margin-bottom: 6px;
+}
+
+.circle-profile {
+	display: inline-block; width: 48px; height: 48px; background-color: #efefef; border-radius: 50%;
+}
+
+.post-content-container {
+	display: flex; flex-direction: column; margin-left: 12px;
+}
+
+.posts-comments {
+	height: 15px; background-color: #efefef; border-radius: 4px; margin-bottom: 6px; margin-top: 2px;
+}
+
+.placeholder-container {
+	display: flex; align-items: center; position: relative;
+}
+
+.like-rectangle, .comment-rectangle {
+	width: 50px; height: 15px; background-color: #efefef; border-radius: 4px; margin-right: 5px;
+}
+
+.comment-rectangle {
+	width: 30px;
+}
+
+.rectangle-text {
+	font-size: 14px; font-weight: bold;
+}
+
+.body-wrapper {
+	height: 100%;
+	overflow-y: scroll;
+}
+
+.navigation-buttons {
+	width: 100vw;
+	height: 100vh;
+	position: fixed;
+	padding: 16px 12px;
+}
+
+.button-beginning, .button-end, .button-random {
+	position: fixed; z-index: 2;
+}
+
+.button-beginning {
+	bottom: 0; left: 0;
+	margin-bottom: 16px; margin-left: 12px;
+}
+
+.button-end {
+	bottom: 0; right: 0;
+	margin-bottom: 16px; margin-right: 12px;
+}
+
+.button-random {
+	top: 0; right: 0;
+	margin-top: 16px; margin-right: 12px;
+}
+
+/*====mobile-compatibility====*/
+
+.mobile-handle {
+	display: none;
+	flex-direction: column;
+    justify-content: flex-start;
+	color: #ffffff;
+    box-sizing: border-box;
+	padding: 10px 12px;
+	font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+	justify-content: start;
+	position: fixed;
+	width: 70%;
+	height: 52px;
+	min-width: 158.34px;
+	aspect-ratio: 405.2 / 405.2;
+}
+
+@media (pointer: coarse) {
+	.sidebar-button:hover {
+		background-color: #111111; color: #eeeeee;
+	}
+}
+
+@media (max-width: 1563px) {
+	body::before {
+		background: url('bg/1563.png') no-repeat center top;
+		background-size: cover;
+	}
+	.profile-pic-wrapper,
+	.profile-pic {
+		width: 82px;
+		height: 82px;
+	}
+	.posts-content-profile {
+		width: 53px;
+		height: 53px;
+	}
+	.circle-profile {
+		width: 40px;
+		height: 40px;
+	}
+	.username {
+		font-size: 18.5px;
+	}
+	.spacing {
+		font-size: 12.5px;
+		margin-right: 22.5px;
+	}
+	.description {
+		font-size: 11.5px;
+	}
+	.body-wrapper,
+	.post-content {
+		font-size: 0.9.5em;
+	}
+}
+
+@media (max-width: 1208px) {
+	body::before {
+		background: url('bg/1263.png') no-repeat center top;
+		background-size: cover;
+	}
+	.profile-pic-wrapper,
+	.profile-pic,
+	.posts-content-profile,
+	.circle-profile {
+		width: 32px;
+		height: 32px;
+	}
+	.comments-container {
+		margin-left: 0;
+	}
+	.username {
+		font-size: initial;
+	}
+	.spacing,
+	.description {
+		display: none;
+	}
+	.profile-info {
+		line-height: 0;
+		margin-top: 16px;
+	}
+	.profile-wrapper {
+		padding-bottom: 10px;
+	}
+	.body-wrapper,
+	.post-content {
+		font-size: 0.9em;
+	}
+}
+
+@media (max-width: 827px) {
+	body::before {
+		background: url('bg/767.png') no-repeat center top;
+		background-size: cover;
+	}
+	.image-slider-container {
+		background-color: transparent;
+		box-shadow: none;
+	}
+	.media-container {
+		background-color: transparent;
+	}
+	.image-slider-container {
+		max-width: 70%;
+		min-width: 158.34px;
+		aspect-ratio: 405.2 / 405.2;
+		border-radius: 0;
+	}
+	.content-container {
+		position: fixed;
+		width: 70%;
+		height: 76px;
+		min-width: 158.34px;
+		aspect-ratio: 405.2 / 405.2;
+		border-bottom-left-radius: 5px;
+		border-bottom-right-radius: 5px;
+		border: none;
+		padding-bottom: 0px;
+	}
+	.profile-wrapper,
+	.body-wrapper {
+		display: none;
+	}
+	.footer {
+		position: relative;
+		padding-top: 0;
+		border: none;
+	}
+	.mobile-handle {
+		display: flex;
+	}
+	.s-right-button {
+		border-bottom-left-radius: 0;
+	}
+}
+
+/*============================*/

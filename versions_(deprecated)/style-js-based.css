@@ -1,0 +1,298 @@
+body {
+	margin: 0px;
+	padding: 0px;
+	height: 100vh;
+	width: 100vw;
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	position: relative;
+}
+
+body::before {
+	content: '';
+	position: absolute;
+	top: 0;
+	left: 0;
+	right: 0;
+	bottom: 0;
+	background: url('background.png') no-repeat center top;
+	background-size: cover;
+	filter: brightness(35%); /* Dim background by 25% */
+	z-index: -1; /* Keep the background behind everything */
+}
+
+.image-slider-container {
+	width: 79.79%; /* 1532px of 1920px */
+	height: 95.37%; /* 1030px of 1080px */
+	background-color: #ffffff;
+	box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+	display: flex; /* Ensures child elements are laid out in a row */
+	justify-content: flex-start; /* Aligns children to the start (left side) */
+	align-items: stretch; /* Stretch items to fill the container height */
+	z-index: 1; /* Ensure container stays above the background */
+	border-radius: 5px; /* Adjust the value for more/less rounding */
+	overflow: hidden; /* Prevents any overflow from child elements */
+}
+
+
+.image-container {
+	width: auto; /* Let it automatically take width based on height */
+	height: 100%; /* Full height of the white container */
+	background-color: #000000; /* Blue color for visibility */
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	position: relative; /* To position image within it */
+	margin-right: auto; /* Push the container to the left */
+}
+
+.image-container img {
+	max-width: 100%; /* Ensure the image fits within the container */
+	max-height: 100%; /* Ensure the image fits within the container */
+}
+
+.button-image-container {
+	position: relative; /* Ensure this container is relative for absolutely positioned children */
+	width: auto; /* Let it automatically take width based on height */
+	height: 100%; /* Full height of the white container */
+	display: flex;
+	justify-content: center;
+	align-items: center;
+}
+
+.text-container {
+	flex-grow: 1; /* Takes the remaining space */
+	padding-top: 10px;
+	padding-bottom: 10px;
+	padding-left: 12px;
+	padding-right: 12px;
+	display: flex;
+	flex-direction: column; /* Stack text vertically */
+	justify-content: flex-start; /* Align text to the top */
+	background-color: #ffffff; /* Optional: Light background for visibility */
+	height: 100%; /* Ensure it takes the full height of the parent */
+	box-sizing: border-box; /* Include padding in the height calculation */
+	font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif; /* Set font family */
+	position: relative; /* Allow absolute positioning for child elements */
+}
+
+.text-footer {
+	position: relative; /* Position absolutely within the text container */
+	margin-top: auto; /* Ensures it stays at the bottom */
+	font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif; /* Set font family */
+	padding-top: 10px;
+	border-top: 2px solid #efefef;
+}
+
+.likes {
+	font-size: 14px; /* Font size for likes */
+	margin: 0px;
+}
+
+.hidden-random {
+	font-size: 14px; /* Font size for likes */
+	margin: 0px;
+	color: #efefef;
+	background-color: #efefef;
+}
+
+.timestamp {
+	color: #737373; /* Color for the timestamp */
+	font-size: 12px; /* Font size for the timestamp */
+	margin-top: 6px;
+	margin-bottom: 0px;
+}
+
+.profile-wrapper {
+	display: flex; /* Align image and name in a row */
+	align-items: flex-start; /* Align items to the top of the container */
+	border-bottom: 2px solid #efefef; /* White line below the first section */
+	margin-bottom: 10px;
+}
+
+.profile-pic {
+	width: 132px; /* Set width to 132px */
+	height: 132px; /* Set height to 132px */
+	border-radius: 50%; /* Make it circular */
+	margin-top: 0px; /* Remove top margin */
+	border: 1px solid #d4d8d7; /* Add a border around the image */
+	margin-right: 15px; /* Space between image and name */
+	margin-bottom: 20px;
+}
+
+.profile-info {
+	margin: 0px; /* Remove default margin */
+	line-height: 1.5; /* Increase line height for better spacing between lines */
+}
+
+.username {
+	font-size: 16px; /* Set font size for the username */
+	font-weight: bold; /* Make it bold */
+}
+
+.spacing {
+	margin-right: 24px; /* Add space between items */
+	display: inline-block; /* Ensure they stay on the same line */
+	font-size: 14px; /* Set font size for posts, followers, and following */
+}
+
+.description {
+	font-size: 12px; /* Set font size for the description text */
+}
+
+.button-container {
+	position: absolute; /* Positioning the buttons absolutely within the body */
+	top: 50%; /* Center vertically */
+	left: 0px; /* Aligns container to the left */
+	right: 0px; /* Aligns container to the right */
+	transform: translateY(-50%); /* Adjust to center vertically */
+	display: flex; /* Use flexbox for alignment */
+	justify-content: space-between; /* Space buttons to the edges */
+	padding: 0 16px; /* Add padding to the left and right */
+	z-index: 2; /* Ensure buttons are above the slider */
+}
+
+.slider-button {
+	width: 32px; /* Button width */
+	height: 32px; /* Button height */
+	background-color: #ffffff; /* Button background color */
+	color: #000000; /* Text color */
+	border: none; /* Remove default border */
+	border-radius: 50%; /* Make buttons circular */
+	font-size: 24px; /* Font size for the text */
+	display: flex; /* Use flexbox for centering text */
+	justify-content: center; /* Center text horizontally */
+	align-items: center; /* Center text vertically */
+	cursor: pointer; /* Change cursor on hover */
+	transition: background-color 0.3s, opacity 0.3s; /* Add transition for hover effect */
+}
+
+.slider-button:hover {
+	background-color: #f0f0f0; /* Lighten background on hover */
+	opacity: 0.7; /* Reduce opacity on hover */
+}
+
+.image-container video {
+	max-width: 100%; /* Ensure the video fits within the container */
+	max-height: 100%; /* Ensure the video fits within the container */
+	object-fit: cover; /* Maintain aspect ratio and cover the container */
+}
+
+.button-sidebar {
+	position: relative; /* Position relative to contain the buttons */
+	width: 24px; /* Adjust width as needed */
+	height: 100%; /* Full height of the image slider */
+	display: flex; /* Use flex to arrange buttons */
+	flex-direction: column; /* Stack buttons vertically */
+	justify-content: center; /* Center buttons vertically */
+	align-items: center; /* Center buttons horizontally */
+	background-color: transparent; /* Ensure background is transparent */
+}
+
+.sidebar-button {
+	width: 100%; /* Full width of the sidebar */
+	height: 50%; /* Each button takes half of the sidebar's height */
+	background-color: #111111; /* Transparent background */
+	border: none; /* Remove border */
+	cursor: pointer; /* Change cursor on hover */
+	display: flex; /* Use flex to center */
+	justify-content: center; /* Center text horizontally */
+	align-items: center; /* Center text vertically */
+	transition: background-color 0.3s; /* Add transition for hover effect */
+	color: #eeeeee; /* Set text color */
+	font-size: 24px; /* Adjust font size as needed */
+}
+
+.sidebar-button:nth-child(1) {
+	border-bottom: 2px solid #dbdbdb; /* Add a split with a border */
+}
+
+.sidebar-button:hover {
+	background-color: #eeeeee; /* Add hover effect */
+	color: #111111; /* Set text color */
+}
+
+.container {
+    display: flex;               /* Use flexbox for the main container */
+}
+
+.circle {
+    display: inline-block;       /* Set as inline-block */
+    width: 48px;                
+    height: 48px;               
+    background-color: #efefef;  
+    border-radius: 50%;         
+    margin-right: 12px;         /* Space between circle and rectangles */
+}
+
+.rectangle-container {
+    display: flex;               /* Use flexbox for the container */
+    flex-direction: column;      /* Stack rectangles vertically */
+}
+
+.rectangle {
+    width: 82px;                
+    height: 15px;               
+    background-color: #efefef;  
+    border-radius: 4px;        
+    margin-bottom: 6px;         /* Optional: Space between rectangles */
+	margin-top: 2px;
+}
+
+.rectangle2 {
+    width: 256px;                
+    height: 15px;               
+    background-color: #efefef;  
+    border-radius: 4px;        
+}
+
+.profile-post {
+	width: 74px; /* Set width to 132px */
+	height: 74px; /* Set height to 132px */
+	border-radius: 50%; /* Make it circular */
+	margin-top: 0px; /* Remove top margin */
+	border: 1px solid #d4d8d7; /* Add a border around the image */
+	margin-right: 15px; /* Space between image and name */
+}
+
+.rectangle-profile {
+    width: 82px;                
+    height: 24px;               
+    background-color: #efefef;  
+    border-radius: 4px;        
+    margin-bottom: 10px;         /* Optional: Space between rectangles */
+	margin-top: 4px;
+}
+
+.rectangle2-profile {
+    width: 325px;                
+    height: 24px;               
+    background-color: #efefef;  
+    border-radius: 4px;        
+}
+
+.rectangle-footer {
+    width: 15px;              /* Adjust the width of the rectangle */
+    height: 15px;             /* Adjust the height of the rectangle */
+    background-color: #efefef;  /* Rectangle background */
+    margin-right: 8px;        /* Space between the rectangle and text */
+}
+
+.rectangle-with-text {
+    display: flex;               /* Use Flexbox to align the rectangle and text side by side */
+    align-items: center;         /* Vertically align the text with the rectangle */
+}
+
+.rectangle3 {
+    width: 82px;                 
+    height: 16px;               
+    background-color: #efefef;  
+    border-radius: 4px;         
+    margin-right: 4px;          /* Space between the rectangle and the text */
+}
+
+.rectangle-text {
+    font-size: 14px;            /* Set the font size of the text */
+	font-weight: bold;
+}

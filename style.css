@@ -7,22 +7,22 @@ body {
     align-items: center;
     padding: 0;
     margin: 0;
-    overflow: hidden; /* Prevents the scrollbar */
+    overflow-x: hidden; /* Prevent horizontal overflow */
+    overflow-y: auto; /* Allow vertical scrolling */
 }
 
 body::before {
     content: '';
     position: absolute;
     top: 0;
-    right: 0;
     left: 0;
+    width: 100%;
     z-index: -1;
-    background: url('bg/1920.png') no-repeat top center; /* Aligns the image to the top */
-    background-size: cover; /* Ensures the image covers the viewport */
+    background: url('bg/1920.png') no-repeat top center;
+    background-size: cover;
     filter: brightness(35%);
     -webkit-tap-highlight-color: transparent; /* Removes tap highlight on mobile */
 }
-
 
 a {
 	display: inline-block; text-decoration: none; color: inherit; padding: 0; margin: 0;

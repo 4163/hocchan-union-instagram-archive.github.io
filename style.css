@@ -449,6 +449,9 @@ div.timestamps p {
 	}
 	.media-container {
 		background-color: transparent;
+		position: fixed;
+		top: 50vh;
+		transform: translateY(-50%);
 	}
 	.image-slider-container {
 		background-color: transparent;
@@ -457,9 +460,6 @@ div.timestamps p {
 		min-width: 158.34px;
 		aspect-ratio: 405.2 / 405.2;
 		border-radius: 0;
-		position: fixed;
-		top: 50vh;
-		transform: translateY(-50%);
 	}
 	.content-container {
 		position: fixed;

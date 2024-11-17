@@ -151,15 +151,6 @@ document.addEventListener('DOMContentLoaded', function () {
       timestamps.forEach((timestamp) => timestamp.style.display = 'none');
       currentTimestamp.style.display = 'block';
     }
-		
-	function scrollToMiddle() {
-	  const middlePosition = document.body.scrollHeight / 2 - window.innerHeight / 2;
-	  window.scrollTo({
-		top: middlePosition,
-		behavior: 'smooth', // Optional for smooth scrolling
-	  });
-	  updateAllPositions(); // Ensure adjustments are applied after scrolling
-	}
 
     mediaItems.forEach((item) => {
       if (item.tagName.toLowerCase() === 'video') {
@@ -216,6 +207,15 @@ document.addEventListener('DOMContentLoaded', function () {
 
     updateAllPositions();
   }
+  
+	function scrollToMiddle() {
+	  const middlePosition = document.body.scrollHeight / 2 - window.innerHeight / 2;
+	  window.scrollTo({
+		top: middlePosition,
+		behavior: 'smooth', // Optional for smooth scrolling
+	  });
+	  updateAllPositions(); // Ensure adjustments are applied after scrolling
+	}
 
   document.querySelector('.right-button').addEventListener('click', function () {
     currentIndex = (currentIndex + 1) % timestamps.length;

@@ -1,31 +1,27 @@
 body {
-	position: relative;
-	display: flex;
-	width: 100vw;
-	height: 100vh;
-	justify-content: center;
-	align-items: center;
-	padding: 0;
-	margin: 0;
-	overflow: hidden; /* Prevent content overflow from affecting the viewport */
+	position: relative; display: flex; width: 100vw; height: 100vh;
+	justify-content: center; align-items: center; padding: 0; margin: 0;
 }
 
 body::before {
-	content: '';
-	position: fixed; /* Ensures the background sticks to the viewport */
-	top: 0;
-	right: 0;
-	bottom: 0;
-	left: 0;
-	z-index: -1;
-	background: url('bg/1920.png') no-repeat center top;
-	background-size: cover;
-	filter: brightness(35%);
-	-webkit-tap-highlight-color: transparent; /* Removes tap highlight on mobile */
+	content: ''; position: absolute; top: 0; right: 0; bottom: 0; left: 0; z-index: -1;
+	background-size: cover; filter: brightness(35%); -webkit-tap-highlight-color: transparent; /* Removes tap highlight on mobile */
 }
 
 a {
 	display: inline-block; text-decoration: none; color: inherit; padding: 0; margin: 0;
+}
+
+.background {
+	position: fixed; /* Fixes the background to the viewport */
+	top: 0;
+	right: 0;
+	bottom: 0;
+	left: 0;
+	background: url('bg/1920.png') no-repeat center top;
+	background-size: cover;
+	filter: brightness(35%);
+	z-index: -1; /* Ensures it stays behind the content */
 }
 
 .image-slider-container {
@@ -374,7 +370,7 @@ div.timestamps p {
 }
 
 @media (max-width: 1563px) {
-	body::before {
+	.background {
 		background: url('bg/1563.png') no-repeat center top;
 		background-size: cover;
 	}
@@ -408,7 +404,7 @@ div.timestamps p {
 }
 
 @media (max-width: 1208px) {
-	body::before {
+	.background {
 		background: url('bg/1263.png') no-repeat center top;
 		background-size: cover;
 	}
@@ -443,7 +439,7 @@ div.timestamps p {
 }
 
 @media (max-width: 827px) {
-	body::before {
+	.background {
 		background: url('bg/767.png') no-repeat center top;
 		background-size: cover;
 	}

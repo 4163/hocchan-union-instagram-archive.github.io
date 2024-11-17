@@ -1,6 +1,7 @@
 body {
 	position: relative; display: flex; width: 100vw; height: 100vh;
-	justify-content: center; align-items: center; padding: 0; margin: 0;
+	justify-content: center; align-items: center; padding: 0; margin: 0;\
+	overflow: hidden;
 }
 
 body::before {
@@ -326,7 +327,7 @@ div.timestamps p {
 	padding: 16px 12px;
 }
 
-.button-beginning, .button-end, .button-random {
+.button-beginning, .button-end, .button-random, .button-center {
 	position: fixed; z-index: 2;
 }
 
@@ -343,6 +344,12 @@ div.timestamps p {
 .button-random {
 	top: 0; right: 0;
 	margin-top: 16px; margin-right: 12px;
+}
+
+.button-center {
+	display: none;
+	top: 0; left: 0;
+	margin-top: 16px; margin-left: 12px;
 }
 
 /*====mobile-compatibility====*/
@@ -481,6 +488,9 @@ div.timestamps p {
 	}
 	.s-right-button {
 		border-bottom-left-radius: 0;
+	}
+	.button-center {
+		display: block;
 	}
 }
 

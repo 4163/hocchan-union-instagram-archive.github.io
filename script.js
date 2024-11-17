@@ -246,6 +246,11 @@ document.addEventListener('DOMContentLoaded', function () {
     localStorage.setItem('currentIndex', currentIndex);
     updateMedia();
   });
+  
+	document.querySelector('.center').addEventListener('click', function () {
+	  scrollToMiddle(); // Scroll to the middle of the page
+	  updateAllPositions(); // Apply the precise adjustments
+	});
 
   document.querySelector('.s-right-button').addEventListener('click', function () {
     const currentTimestamp = timestamps[currentIndex].className;

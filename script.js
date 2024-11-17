@@ -299,5 +299,6 @@ document.addEventListener('DOMContentLoaded', function () {
   });
 
   window.addEventListener("resize", updateAllPositions);
+  window.addEventListener("scroll", updateAllPositions); // Trigger on scroll
   updateMedia();
 });

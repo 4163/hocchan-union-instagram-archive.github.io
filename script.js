@@ -208,69 +208,21 @@ document.addEventListener('DOMContentLoaded', function () {
     updateAllPositions();
   }
   
-// Create a debug container for logs
-function createDebugContainer() {
-  let debugContainer = document.querySelector('#debug-container');
-  if (!debugContainer) {
-    debugContainer = document.createElement('div');
-    debugContainer.id = 'debug-container';
-    Object.assign(debugContainer.style, {
-      position: 'fixed',
-      top: '50%',
-      left: '50%',
-      transform: 'translate(-50%, -50%)',
-      backgroundColor: 'rgba(0, 0, 0, 0.7)',
-      color: 'white',
-      padding: '10px',
-      borderRadius: '5px',
-      zIndex: '9999',
-      maxWidth: '90%',
-      textAlign: 'center',
-      fontSize: '14px',
-      lineHeight: '1.5',
-      overflow: 'auto',
-    });
-    document.body.appendChild(debugContainer);
-  }
-  return debugContainer;
-}
+	function scrollToMiddle() {
+	  const middlePosition = Math.max(0, document.body.scrollHeight / 2 - window.innerHeight / 2);
 
-// Append messages to the debug container
-function logToScreen(message) {
-  const debugContainer = createDebugContainer();
-  const logEntry = document.createElement('div');
-  logEntry.textContent = message;
-  debugContainer.appendChild(logEntry);
+	  window.scrollTo({
+		top: middlePosition,
+		behavior: 'smooth',
+	  });
 
-  // Automatically clear after 5 seconds
-  setTimeout(() => {
-    if (logEntry.parentNode === debugContainer) {
-      debugContainer.removeChild(logEntry);
-    }
-  }, 5000);
-}
+	  updateAllPositions(); // Ensure adjustments are applied after scrolling
+	}
 
-// Updated scrollToMiddle with logging
-function scrollToMiddle() {
-  const middlePosition = Math.max(0, document.body.scrollHeight / 2 - window.innerHeight / 2);
-
-  logToScreen(`Body Scroll Height: ${document.body.scrollHeight}`);
-  logToScreen(`Viewport Height: ${window.innerHeight}`);
-  logToScreen(`Scrolling to: ${middlePosition}`);
-
-  window.scrollTo({
-    top: middlePosition,
-    behavior: 'smooth',
-  });
-
-  updateAllPositions(); // Ensure adjustments are applied after scrolling
-}
-
-// Delay invocation to ensure page layout is stable
-setTimeout(() => {
-  scrollToMiddle();
-}, 100);
-
+	// Delay invocation to ensure page layout is stable
+	setTimeout(() => {
+	  scrollToMiddle();
+	}, 100);
 
   document.querySelector('.right-button').addEventListener('click', function () {
     currentIndex = (currentIndex + 1) % timestamps.length;

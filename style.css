@@ -447,21 +447,19 @@ div.timestamps p {
 		background: url('bg/767.png') no-repeat center top;
 		background-size: cover;
 	}
+	.media-container {
+		background-color: transparent;
+	}
 	.image-slider-container {
 		background-color: transparent;
 		box-shadow: none;
-	}
-	.media-container {
-		background-color: transparent;
-		position: absolute;
-		top: 50vh;
-		transform: translateY(-50%);
-	}
-	.image-slider-container {
 		max-width: 70%;
 		min-width: 158.34px;
 		aspect-ratio: 405.2 / 405.2;
 		border-radius: 0;
+		position: absolute;
+		top: 50vh;
+		transform: translateY(-50%);
 	}
 	.content-container {
 		position: fixed;

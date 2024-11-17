@@ -151,6 +151,15 @@ document.addEventListener('DOMContentLoaded', function () {
       timestamps.forEach((timestamp) => timestamp.style.display = 'none');
       currentTimestamp.style.display = 'block';
     }
+		
+	function scrollToMiddle() {
+	  const middlePosition = document.body.scrollHeight / 2 - window.innerHeight / 2;
+	  window.scrollTo({
+		top: middlePosition,
+		behavior: 'smooth', // Optional for smooth scrolling
+	  });
+	  updateAllPositions(); // Ensure adjustments are applied after scrolling
+	}
 
     mediaItems.forEach((item) => {
       if (item.tagName.toLowerCase() === 'video') {
@@ -301,4 +310,5 @@ document.addEventListener('DOMContentLoaded', function () {
   window.addEventListener("resize", updateAllPositions);
   window.addEventListener("scroll", updateAllPositions); // Trigger on scroll
   updateMedia();
+  scrollToMiddle();
 });

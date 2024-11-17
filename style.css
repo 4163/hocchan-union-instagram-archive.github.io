@@ -13,8 +13,6 @@ body {
 body::before {
     content: '';
     position: absolute;
-    width: 100vw;
-    height: 100vh;
     top: 0;
     right: 0;
     bottom: 0;
@@ -455,6 +453,9 @@ div.timestamps p {
 	}
 	.media-container {
 		background-color: transparent;
+		position: absolute;
+		top: 50vh;
+		transform: translateY(-50%);
 	}
 	.image-slider-container {
 		max-width: 70%;

@@ -208,14 +208,25 @@ document.addEventListener('DOMContentLoaded', function () {
     updateAllPositions();
   }
   
-	function scrollToMiddle() {
-	  const middlePosition = document.body.scrollHeight / 2 - window.innerHeight / 2;
-	  window.scrollTo({
-		top: middlePosition,
-		behavior: 'smooth', // Optional for smooth scrolling
-	  });
-	  updateAllPositions(); // Ensure adjustments are applied after scrolling
-	}
+function scrollToMiddle() {
+  // Calculate middle position
+  const middlePosition = Math.max(0, document.body.scrollHeight / 2 - window.innerHeight / 2);
+
+  console.log("Scrolling to:", middlePosition); // Debugging log
+
+  // Scroll smoothly to the middle
+  window.scrollTo({
+    top: middlePosition,
+    behavior: 'smooth', // Optional for smooth scrolling
+  });
+
+  updateAllPositions(); // Ensure adjustments are applied after scrolling
+}
+
+// Delay invocation to ensure page layout is stable
+setTimeout(() => {
+  scrollToMiddle();
+}, 100); // Adjust timeout as needed
 
   document.querySelector('.right-button').addEventListener('click', function () {
     currentIndex = (currentIndex + 1) % timestamps.length;

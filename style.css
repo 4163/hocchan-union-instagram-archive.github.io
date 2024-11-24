@@ -1,3 +1,9 @@
+.media-container img, .media-container video,
+.timestamps p, .post-content, .likes, .comments,
+.button-sidebar {
+	display: none;
+}
+
 body {
 	position: relative; display: flex; width: 100vw; height: 100vh;
 	justify-content: center; align-items: center; padding: 0; margin: 0;\
@@ -284,7 +290,20 @@ div.timestamps p {
 }
 
 .place-holder-posts {
-	width: 325px; height: 16px; background-color: #efefef; border-radius: 4px; margin-bottom: 6px;
+	height: 16px; background-color: #efefef; border-radius: 4px; margin-bottom: 6px;
+}
+
+.ph1 {
+	width: 245px;
+	margin-top: 6px;
+}
+
+.ph2 {
+	width: 318px;
+}
+
+.ph3 {
+	width: 82px;
 }
 
 .circle-profile {
@@ -376,6 +395,19 @@ div.timestamps p {
 	}
 }
 
+@media (max-width: 1671px) {
+	.ph1 {
+	width: 192px;
+	margin-top: 6px;
+	}
+	.ph2 {
+		width: 254px;
+	}
+	.ph3 {
+		width: 96px;
+	}
+}
+
 @media (max-width: 1563px) {
 	.background {
 		background: url('bg/1563.png') no-repeat center top;
@@ -407,6 +439,19 @@ div.timestamps p {
 	.body-wrapper,
 	.post-content {
 		font-size: 0.9.5em;
+	}
+}
+
+@media (max-width: 1403px) {
+	.ph1 {
+	width: 96px;
+	margin-top: 6px;
+	}
+	.ph2 {
+		width: 190px;
+	}
+	.ph3 {
+		width: 48px;
 	}
 }
 

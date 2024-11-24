@@ -10,7 +10,7 @@ this took two days straight to make, not counting the hours it took learning int
 
 if you want to add new content to the slider/website:
 place the image or video in the 'Media' folder.
-the media "navigation" is indexed by the dates, basically all you need to know is that you need to add a date to <div class="timestamp"> (date and times),
+the media "navigation" is indexed by the dates, basically all you need to know is that you need to add a date to <div class="timestamps"> (date and times),
 and with that you need to pair it with a media on <div class="media-container"> (media files).
 you can add a post texts on <span> class post-content (actual posts contents),
 add number of likes and comments on <p> class likes and <p> class comments (like and comment values), but these are not required.
@@ -18,7 +18,7 @@ add number of likes and comments on <p> class likes and <p> class comments (like
 posts with multiple media:
 place the files on the 'Media' folder, the files should be named as filename_affix (example being hocchanImage_1.jpg)
 and the other media that you want to include in order needs to have a higher affix value (example being hocchanImage.jpg_2, _3, _4 etc..)
-again, you need to define the date on <div class="timestamp"> (date and times) for the first media filename_1 (no need to define for the affixed filenames).
+again, you need to define the date on <div class="timestamps"> (date and times) for the first media filename_1 (no need to define for the affixed filenames).
 and pair that with a media on <div class="media-container"> (media files), ctrl+f (2024-05-12_21-33-34_UTC) as an example on how to do that.
 
 to find these sections ctrl+f the things I put in brackets (), or manually find the sections good luck on doing that tho, lol.
@@ -970,9 +970,9 @@ wrote mobile compatibility on 11/09/2024 (for like 16+ hours straight lol).
 						</div>
 						<!-- case where there's no matching post content for a date -->
 						<div class="noDate">
-							<div class="place-holder-posts" style="width: 245px;"></div>
-							<div class="place-holder-posts"></div>
-							<div class="place-holder-posts" style="width: 82px;"></div>
+							<div class="place-holder-posts ph1"></div>
+							<div class="place-holder-posts ph2"></div>
+							<div class="place-holder-posts ph3"></div>
 						</div>
 						<!-- actual posts contents -->
 						<div>

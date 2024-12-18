@@ -44,6 +44,19 @@ wrote mobile compatibility on 11/09/2024 (for like 16+ hours straight lol).
 	<link rel="icon" href="De-Dwpd5CHc.png" type="image/png" />
 	<script src="script.js" defer></script>
 	<script src="js-anim.js" defer></script>
+	<script defer>
+		// Set the custom --vh property on load and resize
+		const updateVH = () => {
+			const vh = window.innerHeight * 0.01;
+			document.documentElement.style.setProperty('--vh', `${vh}px`);
+		};
+
+		// Trigger on page load
+		updateVH();
+
+		// Recalculate on resize
+		window.addEventListener('resize', updateVH);
+	</script>
 </head>
 <body>
 	<div class="background"></div>

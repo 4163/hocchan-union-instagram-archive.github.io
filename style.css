@@ -4,8 +4,12 @@
 	display: none;
 }
 
+:root {
+	--vh: 1vh; /* Fallback for older browsers */
+}
+
 body {
-	position: relative; display: flex; width: 100vw; height: 100vh;
+	position: relative; display: flex; width: 100vw; height: calc(var(--vh, 1vh) * 100); /* Use custom --vh */
 	justify-content: center; align-items: center; padding: 0; margin: 0;\
 	overflow: hidden;
 }

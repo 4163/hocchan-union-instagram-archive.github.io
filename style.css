@@ -4,27 +4,6 @@
 	display: none;
 }
 
-:root {
-	--box-width: ;
-	--box-height: ;
-}
-
-.loading-box {
-	position: absolute;
-	display: none;
-	justify-content: center;
-	align-items: center;
-	width: var(--box-width);
-	height: var(--box-height);
-	z-index: 1000;
-}
-
-.loading-box img {
-	position: absolute;
-	width: 100px;
-	height: 100px;
-}
-
 body {
 	position: relative; display: flex; width: 100vw; height: 100vh;
 	justify-content: center; align-items: center; padding: 0; margin: 0;\

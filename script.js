@@ -324,3 +324,25 @@ document.addEventListener('DOMContentLoaded', function () {
   updateMedia();
   scrollToMiddle();
 });
+
+// Update CSS custom property for correct mobile viewport height
+function updateViewportHeight() {
+    const vh = window.innerHeight * 0.01; // Get 1% of the viewport height
+    document.documentElement.style.setProperty('--vh', `${vh}px`);
+}
+
+// Initial update
+updateViewportHeight();
+
+// Update on resize and orientation change
+window.addEventListener('resize', updateViewportHeight);
+window.addEventListener('orientationchange', updateViewportHeight);
+
+// Fallback for cases where resize and orientation events don't trigger viewport changes
+document.addEventListener('DOMContentLoaded', () => {
+    updateViewportHeight();
+
+    // Monitor for any additional environmental changes
+    const observer = new MutationObserver(() => updateViewportHeight());
+    observer.observe(document.body, { attributes: true, childList: true, subtree: true });
+});

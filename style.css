@@ -1,3 +1,7 @@
+* {
+    outline: 1px solid red; /* Highlight all elements */
+}
+
 .media-container img, .media-container video,
 .timestamps p, .post-content, .likes, .comments,
 .button-sidebar {
@@ -29,7 +33,7 @@ a {
 	right: 0;
 	bottom: 0;
 	left: 0;
-	background: url('bg/1920.png') no-repeat center top;
+	background: url('bgs/1920.png') no-repeat center top;
 	background-size: cover;
 	filter: brightness(35%);
 	z-index: -1; /* Ensures it stays behind the content */
@@ -414,7 +418,7 @@ div.timestamps p {
 
 @media (max-width: 1563px) {
 	.background {
-		background: url('bg/1563.png') no-repeat center top;
+		background: url('bgs/1563.png') no-repeat center top;
 		background-size: cover;
 	}
 	.profile-pic-wrapper,
@@ -461,7 +465,7 @@ div.timestamps p {
 
 @media (max-width: 1208px) {
 	.background {
-		background: url('bg/1263.png') no-repeat center top;
+		background: url('bgs/1263.png') no-repeat center top;
 		background-size: cover;
 	}
 	.profile-pic-wrapper,
@@ -499,7 +503,7 @@ div.timestamps p {
 
 @media (max-width: 827px) {
 	.background {
-		background: url('bg/767.png') no-repeat center top;
+		background: url('bgs/767.png') no-repeat center top;
 		background-size: cover;
 	}
 	.image-slider-container {

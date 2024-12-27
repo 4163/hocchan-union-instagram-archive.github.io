@@ -1,7 +1,3 @@
-* {
-    outline: 1px solid red; /* Highlight all elements */
-}
-
 .media-container img, .media-container video,
 .timestamps p, .post-content, .likes, .comments,
 .button-sidebar {

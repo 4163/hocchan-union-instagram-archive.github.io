@@ -4,6 +4,10 @@
 	display: none;
 }
 
+html {
+	font-size: 16px;
+}
+
 :root {
 	--vh: 1vh; /* Fallback for older browsers */
 }
@@ -543,6 +547,9 @@ div.timestamps p {
 	}
 	.button-center {
 		display: block;
+	}
+	.slider-button {
+		z-index: 2;
 	}
 }
 

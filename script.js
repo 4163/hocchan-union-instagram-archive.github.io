@@ -23,6 +23,8 @@ document.addEventListener('DOMContentLoaded', function () {
 
   let mediaHeight, mediaWidth;
 
+  const mediaOffset = 3; // Configurable offset
+
   function calculateMediaDistanceBottom() {
     const mediaContainer = document.querySelector('.media');
     const visibleMedia = Array.from(mediaContainer.children).find(item => window.getComputedStyle(item).display === 'block');
@@ -255,8 +257,8 @@ document.addEventListener('DOMContentLoaded', function () {
     }
   
     // Load adjacent media items
-    const prevIndex = (currentIndex - 1 + timestamps.length) % timestamps.length;
-    const nextIndex = (currentIndex + 1) % timestamps.length;
+    const prevIndex = (currentIndex - mediaOffset + timestamps.length) % timestamps.length;
+    const nextIndex = (currentIndex + mediaOffset) % timestamps.length;
   
     [currentIndex, prevIndex, nextIndex].forEach(index => {
       const timestamp = timestamps[index];
@@ -281,39 +283,36 @@ document.addEventListener('DOMContentLoaded', function () {
     updateAllPositions();
   }
 
-  function preloadAdjacentMedia() {
-    const adjacentIndices = [
-      (currentIndex - 1 + timestamps.length) % timestamps.length,
-      currentIndex,
-      (currentIndex + 1) % timestamps.length,
-      0, // Always preload the first index
-      timestamps.length - 1, // Always preload the last index
-      preGeneratedRandomIndex // Preload the pre-generated random index
-    ];
-  
-    adjacentIndices.forEach(index => {
-      const timestamp = timestamps[index];
-      const mediaClass = timestamp.className;
-      const mediaItem = Array.from(mediaItems).find(media => media.classList.contains(mediaClass) && !media.classList.contains('sub-post'));
-  
-      if (mediaItem) {
-        if (mediaItem.tagName.toLowerCase() === 'video') {
-          const source = mediaItem.querySelector('source[data-src]');
-          if (source && source.dataset.src) {
-            source.src = source.dataset.src;
-            source.removeAttribute('data-src');
-            mediaItem.load(); // Load the video after setting the src
+  function preloadAdjacentMedia(index) {
+    const preloadRange = (start, end) => {
+      for (let i = start; i <= end; i++) {
+        const idx = (i + timestamps.length) % timestamps.length;
+        const timestamp = timestamps[idx];
+        const mediaClass = timestamp.className;
+        const mediaItem = Array.from(mediaItems).find(media => media.classList.contains(mediaClass) && !media.classList.contains('sub-post'));
+
+        if (mediaItem) {
+          if (mediaItem.tagName.toLowerCase() === 'video') {
+            const source = mediaItem.querySelector('source[data-src]');
+            if (source && source.dataset.src) {
+              source.src = source.dataset.src;
+              source.removeAttribute('data-src');
+              mediaItem.load(); // Load the video after setting the src
+            }
+          } else if (mediaItem.dataset.src) {
+            mediaItem.src = mediaItem.dataset.src;
+            mediaItem.removeAttribute('data-src');
           }
-        } else if (mediaItem.dataset.src) {
-          mediaItem.src = mediaItem.dataset.src;
-          mediaItem.removeAttribute('data-src');
         }
       }
-    });
+    };
+
+    // Preload range from index - mediaOffset to index + mediaOffset
+    preloadRange(index - mediaOffset, index + mediaOffset);
   }
   
   // Call preloadAdjacentMedia on initial load and whenever the media is updated
-  preloadAdjacentMedia();
+  preloadAdjacentMedia(currentIndex);
   updateMedia();
 
   function scrollToMiddle() {
@@ -351,6 +350,7 @@ document.addEventListener('DOMContentLoaded', function () {
     localStorage.setItem('currentIndex', currentIndex);
     console.log(`Beginning. Index: ${currentIndex + 1}`); // Log current index on beginning button click
     updateMedia();
+    preloadAdjacentMedia(currentIndex); // Preload range for the beginning
   });
 
   document.querySelector('#end').addEventListener('click', function () {
@@ -358,6 +358,7 @@ document.addEventListener('DOMContentLoaded', function () {
     localStorage.setItem('currentIndex', currentIndex);
     console.log(`End. Index: ${currentIndex + 1}`); // Log current index on end button click
     updateMedia();
+    preloadAdjacentMedia(currentIndex); // Preload range for the end
   });
 
   document.querySelector('#random').addEventListener('click', function () {
@@ -368,7 +369,7 @@ document.addEventListener('DOMContentLoaded', function () {
 
     // Generate a new random index for the next use
     preGeneratedRandomIndex = Math.floor(Math.random() * timestamps.length);
-    preloadAdjacentMedia(); // Preload the new random index
+    preloadAdjacentMedia(currentIndex); // Preload the new random index
   });
 
   document.querySelector('.sidebar #next').addEventListener('click', function () {
@@ -442,6 +443,7 @@ document.addEventListener('DOMContentLoaded', function () {
       localStorage.setItem('currentIndex', currentIndex);
       console.log(`Go-to: ${currentIndex + 1}`); // Log current index on go-to button click
       updateMedia();
+      preloadAdjacentMedia(currentIndex); // Preload range for the specified index
     }
   });
 
@@ -455,6 +457,7 @@ document.addEventListener('DOMContentLoaded', function () {
         localStorage.setItem('currentIndex', currentIndex);
         console.log(`Key pressed. Index: ${currentIndex + 1}`); // Log current index on enter key press
         updateMedia();
+        preloadAdjacentMedia(currentIndex); // Preload range for the specified index
       }
     }
   });
@@ -494,8 +497,8 @@ document.querySelectorAll('.media img, .media video').forEach(media => {
 });
 
   // Preload adjacent media items and affixed media on initial load
-  const prevIndex = (currentIndex - 1 + timestamps.length) % timestamps.length;
-  const nextIndex = (currentIndex + 1) % timestamps.length;
+  const prevIndex = (currentIndex - mediaOffset + timestamps.length) % timestamps.length;
+  const nextIndex = (currentIndex + mediaOffset) % timestamps.length;
 
   [currentIndex, prevIndex, nextIndex].forEach(index => {
     const timestamp = timestamps[index];

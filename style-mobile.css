@@ -1,0 +1,246 @@
+.handle {
+    display: none;
+    box-sizing: border-box;
+    padding: 10px 12px;
+    position: fixed;
+    width: 70%;
+    height: 52px;
+    min-width: 158.34px;
+    aspect-ratio: 405.2 / 405.2;
+}
+
+.handle > div {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+.handle .pfp img {
+    width: 32px;
+    height: 32px;
+}
+
+.handle .username a {
+    color: #ffffff;
+}
+
+@media (pointer: coarse) {
+    .navigation {
+        user-select: none;
+        -webkit-tap-highlight-color: transparent;
+        -webkit-touch-callout: none;
+    }
+    .buttons:hover {
+        opacity: 1 !important;
+    }
+    .navigation button:active {
+        background-color: #acacac;
+    }
+
+    .sidebar button:hover {
+        background-color: #111111;
+        color: #eeeeee;
+    }
+    .sidebar button:active {
+        background-color: #eeeeee;
+        color: #111111;
+    }
+}
+
+@media (max-width: 1671px) {
+    .noContent div:nth-child(1) {
+        width: 192px;
+    }
+}
+
+@media (max-width: 1563px) {
+    .background {
+        background: url('bgs/1563.png') no-repeat center top;
+        background-size: cover;
+    }
+    .pfp {
+        height: 84px;
+    }
+    .pfp img {
+        width: 82px;
+        height: 82px;
+    }
+    .post > a {
+        height: 55px;
+    }
+    .post img {
+        width: 53px;
+        height: 53px;
+    }
+    .post .username {
+        font-size: 16px;
+    }
+    .stats {
+        font-size: 12.5px;
+        margin-right: 22.5px;
+    }
+    .bio {
+        font-size: 11.5px;
+    }
+    .content {
+        font-size: 13px;
+    }
+    .comment-pfp {
+        width: 40px;
+        min-width: 40px;
+        height: 40px;
+    }
+}
+
+@media (max-width: 1208px) {
+    .background {
+        background: url('bgs/1263.png') no-repeat center top;
+        background-size: cover;
+    }
+    .profile {
+        padding-bottom: 10px;
+    }
+    .post .wrapper {
+        padding-left: 10px;
+    }
+    .pfp,
+    .post > a {
+        height: 34px;
+    }
+    .pfp img,
+    .post img,
+    .comment-pfp {
+        width: 32px;
+        min-width: 32px;
+        height: 32px;
+    }
+    .info {
+        line-height: 0;
+        margin-top: 16px;
+    }
+    .info .username {
+        font-size: unset;
+    }
+    .stats,
+    .bio {
+        display: none;
+    }
+    .commenters {
+        margin-left: 0;
+    }
+}
+
+
+@media (max-width: 827px) {
+    .main,
+    .main-nav {
+        opacity: 0;
+        transition: opacity 0.5s ease-in-out;
+    }
+    .background {
+        background: url('bgs/767.png') no-repeat center top;
+        background-size: cover;
+    }
+    .main {
+        max-width: 70%;
+        min-width: 158.34px;
+        aspect-ratio: 405.2 / 405.2;
+        border-radius: 0;
+        background-color: transparent;
+        box-shadow: none;
+    }
+    .media {
+        background-color: transparent;
+    }
+    .content-island {
+        position: fixed;
+        width: 70%;
+        height: 76px;
+        min-width: 158.34px;
+        aspect-ratio: 405.2 / 405.2;
+        border-bottom-left-radius: 5px;
+        border-bottom-right-radius: 5px;
+        border: none;
+        padding-bottom: 0px;
+    }
+    .profile,
+    .body-wrapper {
+        display: none;
+    }
+    .body {
+        overflow-y: hidden;
+    }
+    .footer {
+        position: relative;
+        padding-top: 0;
+        border: none;
+    }
+    .sidebar #next {
+        border-bottom-left-radius: 0;
+    }
+    div:has(> #beginning),
+    div:has(> #end),
+    div:has(> #random),
+    div:has(> div > .index),
+    .main-nav:has(> #next),
+    .main-nav:has(> #previous) {
+        margin: 8px 16px;
+    }
+    .handle {
+        display: flex;
+    }
+}
+
+@media (max-width: 480px) {
+    .main-nav {
+        opacity: unset;
+        transition: unset;
+    }
+    .navigation > div {
+        position: fixed;
+        left: 0;
+        display: flex;
+        justify-content: space-between;
+        width: calc(100% - 24px);
+        padding: 8px 16px;
+    }
+    .navigation > div:nth-child(1) {
+        bottom: 0;
+    }
+    .navigation > div:nth-child(2) {
+        top: 0;
+    }
+    .navigation > div > div {
+        position: relative;
+        top: unset;
+        bottom: unset !important;
+        left: unset !important;
+        right: unset;
+        padding: 0;
+        margin: 0 !important;
+    }
+    .main-nav:has(#previous),
+    .main-nav:has(#next) {
+        margin-top: 16px;
+        transform: unset;
+    }
+    .main-nav #previous,
+    .main-nav #next {
+        transform: unset;
+        border-radius: 5px;
+    }
+    .main-nav .buttons {
+        width: unset;
+        padding: 8px 16px;
+        border-radius: 5px;
+        font-family: inherit;
+        font-size: revert;
+        font-weight: bold;
+    }
+    .main-nav .buttons span {
+        display: none;
+    }
+    .main-nav .buttons div {
+        display: block;
+    }
+}

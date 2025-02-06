@@ -1,12 +1,19 @@
 document.addEventListener('DOMContentLoaded', function () {
-  const mediaItems = document.querySelectorAll('.media-container img, .media-container video');
-  const timestamps = document.querySelectorAll('.timestamps p');
-  const likes = document.querySelectorAll('.likes');
-  const comments = document.querySelectorAll('.comments');
-  const postContents = document.querySelectorAll('.post-content');
-  const noDateElement = document.querySelector('.noDate');
-  const buttonSidebar = document.querySelector('.button-sidebar');
+  const mediaItems = document.querySelectorAll('.media img, .media video');
+  const timestamps = document.querySelectorAll('.timestamp span');
+  const likes = document.querySelectorAll('.like span');
+  const comments = document.querySelectorAll('.comment span');
+  const postContents = document.querySelectorAll('.content span');
+  const noContentElement = document.querySelector('.noContent');
+  const buttonSidebar = document.querySelector('.sidebar');
   let currentIndex = parseInt(localStorage.getItem('currentIndex')) || 0;
+
+  let preGeneratedRandomIndex = Math.floor(Math.random() * timestamps.length); // Pre-generate a random index
+
+  console.log(`Page loaded. Index: ${currentIndex + 1}`); // Log current index on page load
+
+  // Hide buttonSidebar initially
+  buttonSidebar.style.display = 'none';
 
   const timestampMediaMap = {};
   timestamps.forEach((timestamp, index) => {
@@ -17,7 +24,7 @@ document.addEventListener('DOMContentLoaded', function () {
   let mediaHeight, mediaWidth;
 
   function calculateMediaDistanceBottom() {
-    const mediaContainer = document.querySelector('.media-container');
+    const mediaContainer = document.querySelector('.media');
     const visibleMedia = Array.from(mediaContainer.children).find(item => window.getComputedStyle(item).display === 'block');
 
     if (!visibleMedia) return 0;
@@ -25,26 +32,26 @@ document.addEventListener('DOMContentLoaded', function () {
     const viewportHeight = window.innerHeight;
     const mediaBottomPosition = visibleMedia.getBoundingClientRect().bottom;
 
-    return parseFloat((viewportHeight - mediaBottomPosition - 76).toFixed(2));
+    return parseFloat((viewportHeight - mediaBottomPosition - 76).toFixed(6));
   }
 
   function calculateMediaDistanceTop() {
-    const mediaContainer = document.querySelector('.media-container');
+    const mediaContainer = document.querySelector('.media');
     const visibleMedia = Array.from(mediaContainer.children).find(item => window.getComputedStyle(item).display === 'block');
 
     if (!visibleMedia) return 0;
 
     const mediaTopPosition = visibleMedia.getBoundingClientRect().top;
 
-    return parseFloat((mediaTopPosition - 52).toFixed(2));
+    return parseFloat((mediaTopPosition - 52).toFixed(6));
   }
 
   function updateButtonSidebarHeight() {
     if (window.matchMedia("(max-width: 827px)").matches) {
       const displayedMedia = Array.from(mediaItems).find(item => window.getComputedStyle(item).display === 'block');
       if (displayedMedia) {
-        mediaHeight = parseFloat(displayedMedia.getBoundingClientRect().height.toFixed(2));
-        mediaWidth = parseFloat(displayedMedia.getBoundingClientRect().width.toFixed(2));
+        mediaHeight = parseFloat(displayedMedia.getBoundingClientRect().height.toFixed(6));
+        mediaWidth = parseFloat(displayedMedia.getBoundingClientRect().width.toFixed(6));
         buttonSidebar.style.height = `${mediaHeight}px`;
       }
     } else {
@@ -54,7 +61,7 @@ document.addEventListener('DOMContentLoaded', function () {
 
   function adjustButtonSidebarPosition() {
     if (window.matchMedia("(max-width: 827px)").matches) {
-      const mediaContainer = document.querySelector('.media-container');
+      const mediaContainer = document.querySelector('.media');
       if (!mediaContainer || !mediaHeight) return;
 
       const displayedMedia = Array.from(mediaContainer.children).find(item => window.getComputedStyle(item).display === 'block');
@@ -64,8 +71,8 @@ document.addEventListener('DOMContentLoaded', function () {
       const mediaContainerHeight = mediaContainer.clientHeight;
       const mediaWidth = displayedMedia.clientWidth;
 
-      const translateY = parseFloat(((mediaContainerHeight - mediaHeight) / 2).toFixed(2));
-      const translateX = parseFloat(((mediaContainerWidth - mediaWidth) / 2).toFixed(2));
+      const translateY = parseFloat(((mediaContainerHeight - mediaHeight) / 2).toFixed(6));
+      const translateX = parseFloat(((mediaContainerWidth - mediaWidth) / 2).toFixed(6));
 
       buttonSidebar.style.transform = `translate(${translateX}px, ${translateY}px)`;
     } else {
@@ -75,52 +82,62 @@ document.addEventListener('DOMContentLoaded', function () {
 
   function updateContentContainerPosition() {
     const mediaDistanceBottom = calculateMediaDistanceBottom();
-    document.querySelectorAll('.content-container').forEach(container => {
-      container.style.bottom = `${mediaDistanceBottom.toFixed(2)}px`;
+    document.querySelectorAll('.content-island').forEach(container => {
+      container.style.bottom = `${mediaDistanceBottom.toFixed(6)}px`;
     });
   }
 
   function updateContentContainerWidth() {
-    let adjustedMediaWidth = parseFloat(mediaWidth.toFixed(2));
+    let adjustedMediaWidth = parseFloat(mediaWidth.toFixed(6));
 
     if (buttonSidebar.style.display === 'block') {
       adjustedMediaWidth += 24;
     }
 
     if (adjustedMediaWidth) {
-      document.querySelectorAll('.content-container').forEach(container => {
-        container.style.width = `${adjustedMediaWidth.toFixed(2)}px`;
+      document.querySelectorAll('.content-island').forEach(container => {
+        container.style.width = `${adjustedMediaWidth.toFixed(6)}px`;
       });
     }
   }
 
   function adjustContentContainerPosition() {
-    const imageSliderContainer = document.querySelector('.image-slider-container');
-    if (imageSliderContainer && mediaWidth) {
-      let adjustedMediaWidth = mediaWidth;
+    const mediaContainer = document.querySelector('.media');
+    const displayedMedia = Array.from(mediaContainer.children).find(item => window.getComputedStyle(item).display === 'block');
 
-      if (buttonSidebar.style.display === 'block') {
-        adjustedMediaWidth += 24;
-      }
+    if (mediaContainer && displayedMedia) {
+        const mediaContainerWidth = mediaContainer.clientWidth;
+        const displayedMediaWidth = displayedMedia.clientWidth;
 
-      const sliderWidth = imageSliderContainer.clientWidth;
-      const translateX = parseFloat(((sliderWidth - adjustedMediaWidth) / 2).toFixed(2));
+        // Calculate the translateX value based on the difference in widths
+        const translateX = parseFloat(((mediaContainerWidth - displayedMediaWidth) / 2).toFixed(6));
 
-      document.querySelectorAll('.content-container, .mobile-handle').forEach(element => {
-        element.style.transform = `translate(${translateX}px)`;
-      });
+        // Apply the calculated translateX to the transform property
+        document.querySelectorAll('.content-island, .handle').forEach(element => {
+            element.style.transform = `translate(${translateX}px)`;
+        });
     } else {
-      document.querySelectorAll('.content-container, .mobile-handle').forEach(element => {
-        element.style.transform = '';
-      });
+        // Reset transform if conditions are not met
+        document.querySelectorAll('.content-island, .handle').forEach(element => {
+            element.style.transform = '';
+        });
     }
   }
 
   function updateMobileHandlePosition() {
     const mediaDistanceTop = calculateMediaDistanceTop();
-    document.querySelectorAll('.mobile-handle').forEach(handle => {
-      handle.style.top = `${mediaDistanceTop.toFixed(2)}px`;
+    document.querySelectorAll('.handle').forEach(handle => {
+      handle.style.top = `${mediaDistanceTop.toFixed(6)}px`;
     });
+  }
+
+  function updateFooterWidth() {
+    const contentContainer = document.querySelector('.content-island');
+    const footer = document.querySelector('.footer');
+    if (contentContainer && footer) {
+      const contentContainerWidth = parseFloat(window.getComputedStyle(contentContainer).width);
+      footer.style.width = `${(contentContainerWidth - 26).toFixed(6)}px`;
+    }
   }
 
   function updateAllPositions() {
@@ -132,134 +149,229 @@ document.addEventListener('DOMContentLoaded', function () {
       adjustButtonSidebarPosition();
       adjustContentContainerPosition();
     } else {
-      document.querySelectorAll('.content-container, .mobile-handle').forEach(element => {
+      document.querySelectorAll('.content-island, .handle').forEach(element => {
         element.style.bottom = '';
         element.style.width = '';
         element.style.transform = '';
       });
-      document.querySelectorAll('.mobile-handle').forEach(handle => {
+      document.querySelectorAll('.handle').forEach(handle => {
         handle.style.top = '';
       });
       buttonSidebar.style.height = '';
       buttonSidebar.style.transform = '';
     }
+    updateFooterWidth();
   }
+
+  let opacitySet = false; // Flag to track if opacity has been set
 
   function updateMedia() {
     const currentTimestamp = timestamps[currentIndex];
     if (currentTimestamp) {
-      timestamps.forEach((timestamp) => timestamp.style.display = 'none');
+      timestamps.forEach((timestamp) => timestamp.removeAttribute('style'));
       currentTimestamp.style.display = 'block';
     }
-
+  
+    // Update the current index display
+    document.querySelector('.current-index span').textContent = currentIndex + 1;
+  
     mediaItems.forEach((item) => {
       if (item.tagName.toLowerCase() === 'video') {
         item.pause();
         item.currentTime = 0;
       }
-      item.style.display = 'none';
+      item.removeAttribute('style'); // Remove any inline display styling
     });
-
-    likes.forEach(like => like.style.display = 'none');
-    comments.forEach(comment => comment.style.display = 'none');
-    postContents.forEach(content => content.style.display = 'none');
-    noDateElement.style.display = 'none';
-
-    const noDataElements = document.querySelectorAll('.noData');
-    noDataElements.forEach(el => el.style.display = 'none');
-
+  
+    likes.forEach(like => like.removeAttribute('style'));
+    comments.forEach(comment => comment.removeAttribute('style'));
+    postContents.forEach(content => content.removeAttribute('style'));
+    noContentElement.removeAttribute('style');
+  
     const mediaClass = currentTimestamp.className;
     const mediaIndex = Array.from(mediaItems).findIndex(media => media.classList.contains(mediaClass) && !media.classList.contains('sub-post'));
-
+  
     if (mediaIndex !== -1) {
       const currentMedia = mediaItems[mediaIndex];
       currentMedia.style.display = 'block';
-
+  
+      const handleMediaLoad = () => {
+        if (!opacitySet) { // Check if opacity has already been set
+          updateAllPositions();
+          document.querySelector('.main').style.opacity = '1';
+          document.querySelectorAll('.main-nav').forEach(nav => nav.style.opacity = '1');
+          opacitySet = true; // Set the flag to true
+        }
+        currentMedia.removeEventListener('load', handleMediaLoad);
+        currentMedia.removeEventListener('loadeddata', handleMediaLoad);
+      };
+  
       if (currentMedia.tagName.toLowerCase() === 'video') {
         currentMedia.volume = 0.15;
         currentMedia.play();
+        currentMedia.addEventListener('loadeddata', () => {
+          updateAllPositions(); // Call updateAllPositions when video is fully loaded
+          handleMediaLoad();
+        });
+      } else {
+        currentMedia.addEventListener('load', handleMediaLoad);
       }
-
-      if (currentMedia.classList.contains('sub-post') || currentMedia.classList.contains('main-sub-post')) {
+  
+      updateAllPositions();
+  
+      // Check for affixed media
+      const affixItems = Array.from(mediaItems).filter(item => item.classList.contains(mediaClass) && item.dataset.affix);
+      if (affixItems.length > 0) {
         buttonSidebar.style.display = 'block';
       } else {
         buttonSidebar.style.display = 'none';
       }
-
+  
       const timestampClass = currentTimestamp.className;
       const likeElement = Array.from(likes).find(like => like.classList.contains(timestampClass));
       const commentElement = Array.from(comments).find(comment => comment.classList.contains(timestampClass));
       const postContentElements = Array.from(postContents).filter(content => content.classList.contains(timestampClass));
-
-      if (likeElement) likeElement.style.display = 'block';
-      if (commentElement) commentElement.style.display = 'block';
+  
+      if (likeElement) {
+        likeElement.style.display = 'block';
+        document.querySelectorAll('.like .wrapper .noData').forEach(el => el.removeAttribute('style'));
+      } else {
+        document.querySelectorAll('.like .wrapper .noData').forEach(el => el.style.display = 'block');
+      }
+  
+      if (commentElement) {
+        commentElement.style.display = 'block';
+        document.querySelectorAll('.comment .wrapper .noData').forEach(el => el.removeAttribute('style'));
+      } else {
+        document.querySelectorAll('.comment .wrapper .noData').forEach(el => el.style.display = 'block');
+      }
+  
       if (postContentElements.length > 0) {
         postContentElements.forEach(content => content.style.display = 'block');
-        noDateElement.style.display = 'none';
+        noContentElement.style.display = 'none';
       } else {
-        noDateElement.style.display = 'block';
-      }
-
-      if (!likeElement && !commentElement) {
-        noDataElements.forEach(el => el.style.display = 'block');
+        noContentElement.style.display = 'block';
       }
     }
-
+  
+    // Load adjacent media items
+    const prevIndex = (currentIndex - 1 + timestamps.length) % timestamps.length;
+    const nextIndex = (currentIndex + 1) % timestamps.length;
+  
+    [currentIndex, prevIndex, nextIndex].forEach(index => {
+      const timestamp = timestamps[index];
+      const mediaClass = timestamp.className;
+      const mediaItem = Array.from(mediaItems).find(media => media.classList.contains(mediaClass) && !media.classList.contains('sub-post'));
+  
+      if (mediaItem && mediaItem.dataset.src) {
+        mediaItem.src = mediaItem.dataset.src;
+        mediaItem.removeAttribute('data-src');
+      }
+    });
+  
+    // Preload all affixed media for the current index
+    const affixItems = Array.from(mediaItems).filter(item => item.classList.contains(currentTimestamp.className) && item.dataset.affix);
+    affixItems.forEach(item => {
+      if (item.dataset.src) {
+        item.src = item.dataset.src;
+        item.removeAttribute('data-src');
+      }
+    });
+  
     updateAllPositions();
   }
+
+  function preloadAdjacentMedia() {
+    const adjacentIndices = [
+      (currentIndex - 1 + timestamps.length) % timestamps.length,
+      currentIndex,
+      (currentIndex + 1) % timestamps.length,
+      0, // Always preload the first index
+      timestamps.length - 1, // Always preload the last index
+      preGeneratedRandomIndex // Preload the pre-generated random index
+    ];
   
-	function scrollToMiddle() {
-	  const middlePosition = Math.max(0, document.body.scrollHeight / 2 - window.innerHeight / 2);
+    adjacentIndices.forEach(index => {
+      const timestamp = timestamps[index];
+      const mediaClass = timestamp.className;
+      const mediaItem = Array.from(mediaItems).find(media => media.classList.contains(mediaClass) && !media.classList.contains('sub-post'));
+  
+      if (mediaItem) {
+        if (mediaItem.tagName.toLowerCase() === 'video') {
+          const source = mediaItem.querySelector('source[data-src]');
+          if (source && source.dataset.src) {
+            source.src = source.dataset.src;
+            source.removeAttribute('data-src');
+            mediaItem.load(); // Load the video after setting the src
+          }
+        } else if (mediaItem.dataset.src) {
+          mediaItem.src = mediaItem.dataset.src;
+          mediaItem.removeAttribute('data-src');
+        }
+      }
+    });
+  }
+  
+  // Call preloadAdjacentMedia on initial load and whenever the media is updated
+  preloadAdjacentMedia();
+  updateMedia();
 
-	  window.scrollTo({
-		top: middlePosition,
-		behavior: 'smooth',
-	  });
+  function scrollToMiddle() {
+    const middlePosition = Math.max(0, document.body.scrollHeight / 2 - window.innerHeight / 2);
 
-	  updateAllPositions(); // Ensure adjustments are applied after scrolling
-	}
+    window.scrollTo({
+      top: middlePosition,
+      behavior: 'smooth',
+    });
 
-	// Delay invocation to ensure page layout is stable
-	setTimeout(() => {
-	  scrollToMiddle();
-	}, 100);
+    updateAllPositions(); // Ensure adjustments are applied after scrolling
+  }
 
-  document.querySelector('.right-button').addEventListener('click', function () {
+  // Delay invocation to ensure page layout is stable
+  setTimeout(() => {
+    scrollToMiddle();
+  }, 100);
+
+  document.querySelector('.main-nav #next').addEventListener('click', function () {
     currentIndex = (currentIndex + 1) % timestamps.length;
     localStorage.setItem('currentIndex', currentIndex);
+    console.log(`Next. Index: ${currentIndex + 1}`); // Log current index on right button click
     updateMedia();
   });
 
-  document.querySelector('.left-button').addEventListener('click', function () {
+  document.querySelector('.main-nav #previous').addEventListener('click', function () {
     currentIndex = (currentIndex - 1 + timestamps.length) % timestamps.length;
     localStorage.setItem('currentIndex', currentIndex);
+    console.log(`Previous. Index: ${currentIndex + 1}`); // Log current index on left button click
     updateMedia();
   });
 
-  document.querySelector('.beginning').addEventListener('click', function () {
+  document.querySelector('#beginning').addEventListener('click', function () {
     currentIndex = 0;
     localStorage.setItem('currentIndex', currentIndex);
+    console.log(`Beginning. Index: ${currentIndex + 1}`); // Log current index on beginning button click
     updateMedia();
   });
 
-  document.querySelector('.end').addEventListener('click', function () {
+  document.querySelector('#end').addEventListener('click', function () {
     currentIndex = timestamps.length - 1;
     localStorage.setItem('currentIndex', currentIndex);
+    console.log(`End. Index: ${currentIndex + 1}`); // Log current index on end button click
     updateMedia();
   });
 
-  document.querySelector('.random').addEventListener('click', function () {
-    currentIndex = Math.floor(Math.random() * timestamps.length);
+  document.querySelector('#random').addEventListener('click', function () {
+    currentIndex = preGeneratedRandomIndex; // Use the pre-generated random index
     localStorage.setItem('currentIndex', currentIndex);
+    console.log(`Random. Index: ${currentIndex + 1}`); // Log current index on random button click
     updateMedia();
-  });
-  
-	document.querySelector('.center').addEventListener('click', function () {
-	  scrollToMiddle(); // Scroll to the middle of the page
-	  updateAllPositions(); // Apply the precise adjustments
-	});
 
-  document.querySelector('.s-right-button').addEventListener('click', function () {
+    // Generate a new random index for the next use
+    preGeneratedRandomIndex = Math.floor(Math.random() * timestamps.length);
+    preloadAdjacentMedia(); // Preload the new random index
+  });
+
+  document.querySelector('.sidebar #next').addEventListener('click', function () {
     const currentTimestamp = timestamps[currentIndex].className;
     const affixItems = Array.from(mediaItems).filter(item => item.classList.contains(currentTimestamp) && item.dataset.affix);
     let currentAffixIndex = affixItems.findIndex(item => item.style.display === 'block');
@@ -286,10 +398,11 @@ document.addEventListener('DOMContentLoaded', function () {
       nextMedia.play();
     }
 
+    console.log(`Right`); // Log current index on sub-right button click
     updateAllPositions();
   });
 
-  document.querySelector('.s-left-button').addEventListener('click', function () {
+  document.querySelector('.sidebar #previous').addEventListener('click', function () {
     const currentTimestamp = timestamps[currentIndex].className;
     const affixItems = Array.from(mediaItems).filter(item => item.classList.contains(currentTimestamp) && item.dataset.affix);
     let currentAffixIndex = affixItems.findIndex(item => item.style.display === 'block');
@@ -316,19 +429,134 @@ document.addEventListener('DOMContentLoaded', function () {
       prevMedia.play();
     }
 
+    console.log(`Left`); // Log current index on sub-left button click
     updateAllPositions();
+  });
+
+  document.querySelector('#go-to').addEventListener('click', function () {
+    const indexInput = document.querySelector('.index').value;
+    const index = parseInt(indexInput, 10);
+
+    if (!isNaN(index) && index >= 1 && index <= timestamps.length) {
+      currentIndex = index - 1;
+      localStorage.setItem('currentIndex', currentIndex);
+      console.log(`Go-to: ${currentIndex + 1}`); // Log current index on go-to button click
+      updateMedia();
+    }
+  });
+
+  document.querySelector('.index').addEventListener('keypress', function (event) {
+    if (event.key === 'Enter') {
+      const indexInput = document.querySelector('.index').value;
+      const index = parseInt(indexInput, 10);
+
+      if (!isNaN(index) && index >= 1 && index <= timestamps.length) {
+        currentIndex = index - 1;
+        localStorage.setItem('currentIndex', currentIndex);
+        console.log(`Key pressed. Index: ${currentIndex + 1}`); // Log current index on enter key press
+        updateMedia();
+      }
+    }
   });
 
   window.addEventListener("resize", updateAllPositions);
   window.addEventListener("scroll", updateAllPositions); // Trigger on scroll
   updateMedia();
   scrollToMiddle();
+
+  // Call updateFooterWidth on page load
+  updateFooterWidth();
+
+// Intersection Observer for lazy loading images and videos
+const observer = new IntersectionObserver((entries, observer) => {
+  entries.forEach(entry => {
+    if (entry.isIntersecting) {
+      const media = entry.target;
+      if (media.tagName.toLowerCase() === 'video') {
+        const source = media.querySelector('source[data-src]');
+        if (source && source.dataset.src) {
+          source.src = source.dataset.src;
+          source.removeAttribute('data-src');
+          media.load(); // Load the video after setting the src
+        }
+      } else if (media.dataset.src) {
+        media.src = media.dataset.src;
+        media.removeAttribute('data-src');
+      }
+      observer.unobserve(media);
+      media.addEventListener('load', updateAllPositions);
+    }
+  });
+});
+
+document.querySelectorAll('.media img, .media video').forEach(media => {
+  observer.observe(media);
+});
+
+  // Preload adjacent media items and affixed media on initial load
+  const prevIndex = (currentIndex - 1 + timestamps.length) % timestamps.length;
+  const nextIndex = (currentIndex + 1) % timestamps.length;
+
+  [currentIndex, prevIndex, nextIndex].forEach(index => {
+    const timestamp = timestamps[index];
+    const mediaClass = timestamp.className;
+    const mediaItem = Array.from(mediaItems).find(media => media.classList.contains(mediaClass) && !media.classList.contains('sub-post'));
+
+    if (mediaItem && mediaItem.dataset.src) {
+      mediaItem.src = mediaItem.dataset.src;
+      mediaItem.removeAttribute('data-src');
+    }
+  });
+
+  // Preload all affixed media for the current index on initial load
+  const currentTimestamp = timestamps[currentIndex];
+  const affixItems = Array.from(mediaItems).filter(item => item.classList.contains(currentTimestamp.className) && item.dataset.affix);
+  affixItems.forEach(item => {
+    if (item.dataset.src) {
+      item.src = item.dataset.src;
+      item.removeAttribute('data-src');
+    }
+  });
+
+  // Show buttonSidebar after all media items are preloaded
+  // buttonSidebar.style.display = 'block';
+
+  function preloadMediaAtIndex(index) {
+    if (index >= 0 && index < timestamps.length) {
+      const timestamp = timestamps[index];
+      const mediaClass = timestamp.className;
+      const mediaItem = Array.from(mediaItems).find(media => media.classList.contains(mediaClass) && !media.classList.contains('sub-post'));
+
+      if (mediaItem) {
+        if (mediaItem.tagName.toLowerCase() === 'video') {
+          const source = mediaItem.querySelector('source[data-src]');
+          if (source && source.dataset.src) {
+            source.src = source.dataset.src;
+            source.removeAttribute('data-src');
+            mediaItem.load(); // Load the video after setting the src
+          }
+        } else if (mediaItem.dataset.src) {
+          mediaItem.src = mediaItem.dataset.src;
+          mediaItem.removeAttribute('data-src');
+        }
+      }
+    }
+  }
+
+  // Add event listener to the input field
+  const indexInput = document.querySelector('.index');
+  indexInput.addEventListener('input', function () {
+    const index = parseInt(indexInput.value, 10) - 1; // Convert to zero-based index
+    if (!isNaN(index)) {
+      preloadMediaAtIndex(index);
+    }
+  });
 });
 
 // Update CSS custom property for correct mobile viewport height
 function updateViewportHeight() {
-    const vh = window.innerHeight * 0.01; // Get 1% of the viewport height
-    document.documentElement.style.setProperty('--vh', `${vh}px`);
+  const vh = window.innerHeight * 0.01; // Get 1% of the viewport height
+  document.documentElement.style.setProperty('--vh', `${vh}px`);
 }
 
 // Initial update
@@ -340,9 +568,9 @@ window.addEventListener('orientationchange', updateViewportHeight);
 
 // Fallback for cases where resize and orientation events don't trigger viewport changes
 document.addEventListener('DOMContentLoaded', () => {
-    updateViewportHeight();
+  updateViewportHeight();
 
-    // Monitor for any additional environmental changes
-    const observer = new MutationObserver(() => updateViewportHeight());
-    observer.observe(document.body, { attributes: true, childList: true, subtree: true });
+  // Monitor for any additional environmental changes
+  const observer = new MutationObserver(() => updateViewportHeight());
+  observer.observe(document.body, { attributes: true, childList: true, subtree: true });
 });

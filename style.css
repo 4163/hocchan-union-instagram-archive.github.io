@@ -1,556 +1,474 @@
-.media-container img, .media-container video,
-.timestamps p, .post-content, .likes, .comments,
-.button-sidebar {
-	display: none;
+:root {
+    --vh: 1vh;
 }
 
 html {
-	font-size: 16px;
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+    font-size: 16px;
 }
 
-:root {
-	--vh: 1vh; /* Fallback for older browsers */
+/* Hide arrows in Webkit browsers (Chrome, Safari, Edge) */
+input[type="number"]::-webkit-outer-spin-button,
+input[type="number"]::-webkit-inner-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
+}
+
+/* Hide arrows in Firefox */
+input[type="number"] {
+    -moz-appearance: textfield;
+    appearance: textfield;
 }
 
 body {
-	position: relative; display: flex; width: 100vw; height: calc(var(--vh, 1vh) * 100); /* Use custom --vh */
-	justify-content: center; align-items: center; padding: 0; margin: 0;\
-	overflow: hidden;
-}
-
-body::before {
-	content: ''; position: absolute; top: 0; right: 0; bottom: 0; left: 0; z-index: -1;
-	background-size: cover; filter: brightness(35%); -webkit-tap-highlight-color: transparent; /* Removes tap highlight on mobile */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 100vw;
+    height: calc(var(--vh, 1vh) * 100);
+    margin: 0;
+    background-color: #595959;
 }
 
 a {
-	display: inline-block; text-decoration: none; color: inherit; padding: 0; margin: 0;
+    text-decoration: none;
+    color: initial;
 }
+
+/* Hover effects ============================= */
+/* =========================================== */
+
+/* Main ====================================================================================================== */
+/* =========================================================================================================== */
 
 .background {
-	position: fixed; /* Fixes the background to the viewport */
-	top: 0;
-	right: 0;
-	bottom: 0;
-	left: 0;
-	background: url('bgs/1920.png') no-repeat center top;
-	background-size: cover;
-	filter: brightness(35%);
-	z-index: -1; /* Ensures it stays behind the content */
+    position: fixed;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    left: 0;
+    background: url('bgs/1920.png') no-repeat center top;
+    background-size: cover;
+    opacity: 0;
+    filter: brightness(35%);
+    transition: opacity 0.1s ease-in-out;
 }
 
-.image-slider-container {
-	display: flex;
-	width: 100%;
-	height: auto;
-	max-width: 75.6%;      /* Limit maximum width */
-	max-height: 95%;           /* Let height adjust to maintain aspect ratio */
-	aspect-ratio: 1421 / 921;
-	justify-content: flex-start;
-	align-items: stretch;
-	background-color: #transparent;
-	box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-	z-index: 1;
-	border-top-right-radius: 5px;
-	border-bottom-right-radius: 5px;
-	overflow: hidden;
+.main {
+    display: flex;
+    width: 100%;
+    height: auto;
+    max-width: 75.6%;
+    max-height: 95%;
+    aspect-ratio: 1421 / 921;
+    justify-content: flex-start;
+    align-items: stretch;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    z-index: 1;
+    border-top-right-radius: 5px;
+    border-bottom-right-radius: 5px;
+    overflow: hidden;
 }
 
-.media-container {
-	display: flex;
-	justify-content: center;
-	align-items: center;
-	flex-grow: 1;           /* Make it grow to fill remaining space */
-	height: 100%;
-	background-color: #000000;
-	position: relative;
-	z-index: 999;
+/* Media ===================================================================================================== */
+/* =========================================================================================================== */
+
+.media {
+    display: flex;
+    flex-grow: 1;
+    justify-content: center;
+    align-items: center;
+    height: 100%;
+    background-color: #000000;
 }
 
-.content-container {
-	display: flex;
-	flex-direction: column;
-	justify-content: flex-start;
-	width: 35.19%;
-	min-width: 277px;
-	padding: 10px 12px;
-	background-color: #ffffff;
-	height: 100%;
-	box-sizing: border-box;
-	font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
-	position: relative;
-	border-left: 2px solid #efefef;
-	z-index: 998;
+.media img,
+.media video {
+    display: none;
+    max-width: 100%;
+    max-height: 100%;
 }
 
-.media-container img, .media-container video {
-	max-width: 100%; max-height: 100%; object-fit: cover;
-}
+/* Content Isand ============================================================================================= */
+/* =========================================================================================================== */
 
-.button-media-container {
-	display: flex; justify-content: center; align-items: center;
-	position: relative; width: auto; height: 100%;
-}
-
-.footer {
-	display: flex; align-items: flex-start; position: absolute; bottom: 0; width: 100%;
-	padding-top: 10px; background-color: #ffffff; border-top: 2px solid #efefef;
-	font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
-	flex-direction: column;
-}
-
-.likes, .comments {
-	font-size: 14px;
-}
-
-p.likes, p.comments {
-	margin: 0;
-}
-
-.timestamps {
-	color: #737373; font-size: 12px;
-}
-
-div.timestamps p {
-	margin-top: 2px; margin-bottom: 10px;
-}
-
-.profile-wrapper {
-	display: flex; align-items: flex-start; border-bottom: 2px solid #efefef; margin-bottom: 10px;
-}
-
-.profile-pic-wrapper {
-	position: relative;
-}
-
-.profile-pic-wrapper a {
-	display: block; width: 100%; height: 100%; border-radius: 50%; overflow: hidden;
-}
-
-.profile-pic {
-	width: 132px; height: 132px; border-radius: 50%; margin-top: 0; border: 1px solid #d4d8d7;
-}
-
-.profile-info {
-	margin-left: 12px; margin-top: 0; margin-bottom: 16px; line-height: 1.5;
-}
-
-.username {
-	font-size: 20px; font-weight: bold;
-}
-
-.spacing {
-	display: inline-block; margin-right: 24px; font-size: 14px;
-}
-
-.description {
-	font-size: 12px;
-}
-
-.button-container {
-	display: flex; justify-content: space-between; position: absolute; top: 50%; left: 0; right: 0;
-	transform: translateY(-50%); padding: 0 12px; z-index: 2;
-}
-
-/* General button styling */
-.style-button {
-	display: flex;
-	align-items: center;
-	background-color: #ffffff;
-	color: #000000;
-	border: none;
-	border-radius: 5px;
-	padding: 8px 16px;
-	font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
-	font-weight: bold;
-	cursor: pointer;
-	transition: background-color 0.3s, opacity 0.3s;
-	height: 32px;
-}
-
-.style-button:hover {
-	opacity: 0.7;
-	background-color: #f0f0f0;
-}
-
-.style-button:active {
-	opacity: 0.5; /* Temporary change when clicked */
-	transition: opacity 0.1s; /* Shorter transition for click feedback */
-}
-
-/* Slider button styling */
-.slider-button {
-	display: flex;
-	justify-content: center;
-	align-items: center;
-	width: 32px;
-	height: 32px;
-	background-color: #ffffff;
-	color: #000000;
-	border: none;
-	border-radius: 50%;
-	font-size: 24px;
-	cursor: pointer;
-	transition: background-color 0.3s, opacity 0.3s;
-}
-
-.slider-button:hover {
-	background-color: #f0f0f0;
-	opacity: 0.7;
-}
-
-.slider-button:active {
-	opacity: 0.5;
-	transition: opacity 0.1s;
-}
-
-/* Sidebar button styling */
-.button-sidebar {
-	display: flex;
-	flex-direction: column;
-	justify-content: center;
-	align-items: center;
-	position: relative;
-	width: 24px;
-	height: 100%;
-	background-color: transparent;
-	border-top-left-radius: 5px;
-	border-bottom-left-radius: 5px;
-	z-index: 997;
-}
-
-.sidebar-button {
-	display: flex;
-	justify-content: center;
-	align-items: center;
-	width: 100%;
-	height: 50%;
-	background-color: #111111;
-	border: none;
-	cursor: pointer;
-	color: #eeeeee;
-	font-size: 24px;
-	transition: background-color 0.3s;
-}
-
-.sidebar-button:active {
-	background-color: #333333;
-	transition: background-color 0.1s;
-}
-
-.style-button:focus {
-    opacity: 1; /* Reset on focus */
-    background-color: #ffffff; /* Reset to original */
-}
-
-.slider-button:focus {
-    opacity: 1;
+.content-island {
+    display: flex;
+    flex-direction: column;
+    width: 35.19%;
+    min-width: 277px;
+    height: 100%;
+    padding: 10px 12px;
+    padding-bottom: 0;
+    border-left: 2px solid #efefef;
+    box-sizing: border-box;
     background-color: #ffffff;
 }
 
-.sidebar-button:focus {
-    background-color: #111111;
+/* Profile =================================================================================================== */
+/* =========================================================================================================== */
+
+.profile {
+    display: flex;
+    border-bottom: 2px solid #efefef;
 }
 
-.s-left-button {
-	border-top-left-radius: 5px;
+.pfp {
+    height: 134px;
+    border-radius: 50%;
 }
 
-.s-right-button {
-	border-bottom-left-radius: 5px;
+.pfp img {
+    width: 132px;
+    height: 132px;
+    border-radius: 50%;
+    border: 1px solid #d4d8d7;
 }
 
-.sidebar-button:nth-child(1) {
-	border-bottom: 2px solid #dbdbdb;
+.info {
+    padding-left: 12px;
+    padding-bottom: 16px;
+    line-height: 1.5;
 }
 
-.sidebar-button:hover {
-	background-color: #eeeeee; color: #111111;
+.username {
+    font-weight: bold;
 }
 
-.post-content-wrapper {
-	display: flex;
+.info .username {
+    font-size: 20px;
 }
 
-.comments-container {
-	display: flex; margin-left: 36px;
+
+.stats {
+    display: inline-block;
+    margin-right: 24px;
+    font-size: 14px;
 }
 
-.post-title {
-	font-weight: bold; margin-bottom: 6px;
+.bio {
+    font-size: 12px;
 }
 
-.post-content {
-	display: flex; flex-direction: column; font-size: 14px;
+/* Body ====================================================================================================== */
+/* =========================================================================================================== */
+
+.body {
+    overflow-x: hidden;
+    overflow-y: scroll;
 }
 
-.profile-post {
-	width: 74px; height: 74px; border-radius: 50%; margin-top: 0; border: 1px solid #d4d8d7;
+.post {
+    display: flex;
+    padding-top: 10px;
 }
 
-.posts-content-profile {
-	display: flex; justify-content: center; align-items: center; width: 74px; height: 74px;
-	border-radius: 50%; border: 1px solid #d4d8d7; overflow: hidden; flex-shrink: 0;
+.post > a {
+    height: 76px;
+    border-radius: 50%;
 }
 
-.posts-content-image {
-	width: 100%; height: auto; display: block;
+.post img {
+    width: 74px;
+    height: 74px;
+    border: 1px solid #d4d8d7;
+    border-radius: 50%;
 }
 
-.place-holder-posts {
-	height: 16px; background-color: #efefef; border-radius: 4px; margin-bottom: 6px;
+.post .wrapper,
+.commenters .wrapper {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    padding-left: 12px;
 }
 
-.ph1 {
-	width: 245px;
-	margin-top: 6px;
-}
-
-.ph2 {
-	width: 320px;
-}
-
-.ph3 {
-	width: 82px;
-}
-
-.circle-profile {
-	display: inline-block; width: 48px; height: 48px; background-color: #efefef; border-radius: 50%;
-}
-
-.post-content-container {
-	display: flex; flex-direction: column; margin-left: 12px;
+.post .username {
+    font-size: 18.5px;
 }
 
 .posts-comments {
-	height: 15px; background-color: #efefef; border-radius: 4px; margin-bottom: 6px; margin-top: 2px;
+    height: 15px;
+    background-color: #efefef;
+    border-radius: 4px;
+    margin-bottom: 6px;
+    margin-top: 2px;
+    cursor: pointer;
 }
 
-.placeholder-container {
-	display: flex; align-items: center; position: relative;
+/* Case for when there's no post content on the inputted */
+/* Display set to block via JS ========================= */
+
+.noContent {
+    display: none;
 }
 
-.like-rectangle, .comment-rectangle {
-	width: 50px; height: 15px; background-color: #efefef; border-radius: 4px; margin-right: 5px;
+.noContent div {
+    height: 16px;
+    background-color: #efefef;
+    border-radius: 4px;
+    margin-bottom: 6px;
+    cursor: pointer;
 }
 
-.comment-rectangle {
-	width: 30px;
+.noContent div:nth-child(1) {
+    width: 245px;
+    margin-top: 6px;
 }
 
-.rectangle-text {
-	font-size: 14px; font-weight: bold;
+.noContent div:nth-child(2) {
+    width: 48px;
 }
 
-.body-wrapper {
-	height: 100%;
-	overflow-y: scroll;
+.noContent div:nth-child(3) {
+    width: 96px;
 }
 
-.navigation-buttons {
-	width: 100vw;
-	height: 100vh;
-	position: fixed;
-	padding: 16px 12px;
+/* ===================================================== */
+
+.content {
+    font-size: 14px;
 }
 
-.button-beginning, .button-end, .button-random, .button-center {
-	position: fixed; z-index: 2;
+.content span {
+    display: none;
 }
 
-.button-beginning {
-	bottom: 0; left: 0;
-	margin-bottom: 16px; margin-left: 12px;
+.commenters {
+    display: flex;
+    margin-left: 36px;
 }
 
-.button-end {
-	bottom: 0; right: 0;
-	margin-bottom: 16px; margin-right: 12px;
+.comment-pfp {
+    width: 48px;
+    min-width: 48px;
+    height: 48px;
+    background-color: #efefef;
+    border-radius: 50%;
+    cursor: pointer;
 }
 
-.button-random {
-	top: 0; right: 0;
-	margin-top: 16px; margin-right: 12px;
+/* Footer ==================================================================================================== */
+/* =========================================================================================================== */
+
+.footer {
+    width: 100%;
+    padding-top: 10px;
+    border-top: 2px solid #efefef;
 }
 
-.button-center {
-	display: none;
-	top: 0; left: 0;
-	margin-top: 16px; margin-left: 12px;
+.like,
+.comment {
+    display: flex;
+    width: fit-content;
+    gap: 5px;
+    font-size: 14px;
+    cursor: pointer;
 }
 
-/*====mobile-compatibility====*/
-
-.mobile-handle {
-	display: none;
-	flex-direction: column;
-    justify-content: flex-start;
-	color: #ffffff;
-    box-sizing: border-box;
-	padding: 10px 12px;
-	font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
-	justify-content: start;
-	position: fixed;
-	width: 70%;
-	height: 52px;
-	min-width: 158.34px;
-	aspect-ratio: 405.2 / 405.2;
+.timestamp {
+    color: #737373;
+    font-size: 12px;
 }
 
-@media (pointer: coarse) {
-	.sidebar-button:hover {
-		background-color: #111111; color: #eeeeee;
-	}
+.timestamp span {
+    margin-top: 2px;
+    margin-bottom: 10px;
 }
 
-@media (max-width: 1671px) {
-	.ph1 {
-	width: 192px;
-	margin-top: 6px;
-	}
-	.ph2 {
-		width: 256px;
-	}
-	.ph3 {
-		width: 96px;
-	}
+.like span,
+.comment span,
+.timestamp span {
+    display: none;
 }
 
-@media (max-width: 1563px) {
-	.background {
-		background: url('bgs/1563.png') no-repeat center top;
-		background-size: cover;
-	}
-	.profile-pic-wrapper,
-	.profile-pic {
-		width: 82px;
-		height: 82px;
-	}
-	.posts-content-profile {
-		width: 53px;
-		height: 53px;
-	}
-	.circle-profile {
-		width: 40px;
-		height: 40px;
-	}
-	.username {
-		font-size: 18.5px;
-	}
-	.spacing {
-		font-size: 12.5px;
-		margin-right: 22.5px;
-	}
-	.description {
-		font-size: 11.5px;
-	}
-	.body-wrapper,
-	.post-content {
-		font-size: 0.9.5em;
-	}
+/* Case for when there's no like/comment data */
+/* Display set to block via JS ============== */
+
+.like .wrapper div,
+.comment .wrapper div {
+    display: none;
+    width: 34px;
+    height: 15px;
+    background-color: #efefef;
+    border-radius: 4px;
 }
 
-@media (max-width: 1403px) {
-	.ph1 {
-	width: 96px;
-	margin-top: 6px;
-	}
-	.ph2 {
-		width: 192px;
-	}
-	.ph3 {
-		width: 48px;
-	}
+
+.like .wrapper,
+.comment .wrapper {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 5px;
 }
 
-@media (max-width: 1208px) {
-	.background {
-		background: url('bgs/1263.png') no-repeat center top;
-		background-size: cover;
-	}
-	.profile-pic-wrapper,
-	.profile-pic,
-	.posts-content-profile,
-	.circle-profile {
-		width: 32px;
-		height: 32px;
-	}
-	.comments-container {
-		margin-left: 0;
-	}
-	.username {
-		font-size: initial;
-	}
-	.spacing,
-	.description {
-		display: none;
-	}
-	.profile-info {
-		line-height: 0;
-		margin-top: 16px;
-	}
-	.profile-wrapper {
-		padding-bottom: 10px;
-	}
-	.body-wrapper,
-	.post-content {
-		font-size: 0.9em;
-	}
-	.pcc-2 {
-		transform: translate(-2px);
-	}
+.comment .wrapper div {
+    width: 16px;
 }
 
-@media (max-width: 827px) {
-	.background {
-		background: url('bgs/767.png') no-repeat center top;
-		background-size: cover;
-	}
-	.image-slider-container {
-		background-color: transparent;
-		box-shadow: none;
-	}
-	.media-container {
-		background-color: transparent;
-	}
-	.image-slider-container {
-		max-width: 70%;
-		min-width: 158.34px;
-		aspect-ratio: 405.2 / 405.2;
-		border-radius: 0;
-	}
-	.content-container {
-		position: fixed;
-		width: 70%;
-		height: 76px;
-		min-width: 158.34px;
-		aspect-ratio: 405.2 / 405.2;
-		border-bottom-left-radius: 5px;
-		border-bottom-right-radius: 5px;
-		border: none;
-		padding-bottom: 0px;
-	}
-	.profile-wrapper,
-	.body-wrapper {
-		display: none;
-	}
-	.footer {
-		position: relative;
-		padding-top: 0;
-		border: none;
-	}
-	.mobile-handle {
-		display: flex;
-	}
-	.s-right-button {
-		border-bottom-left-radius: 0;
-	}
-	.button-center {
-		display: block;
-	}
-	.slider-button {
-		z-index: 2;
-	}
+/* ========================================== */
+
+/* Navigation Buttons ======================================================================================== */
+/* =========================================================================================================== */
+
+.navigation {
+    z-index: 2;
 }
 
-/*============================*/
+.navigation > div > div {
+    position: fixed;
+}
+
+div:has(> #beginning) {
+    bottom: 0;
+    left: 0;
+    margin-bottom: 16px;
+    margin-left: 12px;
+}
+
+div:has(> #end) {
+    bottom: 0;
+    right: 0;
+    margin-bottom: 16px;
+    margin-right: 12px;
+}
+
+div:has(> #random) {
+    top: 0;
+    right: 0;
+    margin-top: 16px;
+    margin-right: 12px;
+}
+
+div:has(> div > .index) {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+    top: 0;
+    left: 0;
+    margin-left: 12px;
+    margin-top: 16px;
+}
+
+div:has(> .index) {
+    display: flex;
+    gap: 9px;
+    cursor: unset;
+    white-space: nowrap;
+}
+
+.current-index {
+    border-radius: 5px;
+    text-align: center;
+    font-size: 10px;
+    font-style: italic;
+    font-weight: bold;
+    background-color: #ffffff;
+
+}
+
+.index.buttons {
+    width: 43px;
+    height: 29px;
+    padding: 0 8px;
+    border: 1.5px solid #000000;
+    box-shadow: 0 0 0 1px #ffffff;
+    cursor: unset;
+}
+
+.index.buttons:hover {
+    opacity: unset;
+}
+
+/* Used to hide the mobile elements on desktop */
+
+.main-nav .buttons div {
+    display: none;
+}
+
+/* =========================================== */
+
+.main-nav {
+    top: 50%;
+    transform: translateY(-50%);
+}
+
+.main-nav:has(> #previous) {
+    left: 0;
+    margin-left: 12px;
+}
+
+.main-nav:has(> #next) {
+    right: 0;
+    margin-right: 12px;
+}
+
+.main-nav .buttons {
+    width: 32px;
+    padding: 0;
+    border-radius: 50%;
+    font-family: sans-serif;
+    font-size: 24px;
+    font-weight: unset;
+}
+
+.buttons {
+    height: 32px;
+    padding: 8px 16px;
+    border: none;
+    border-radius: 5px;
+    background-color: #ffffff;
+    font-family: inherit;
+    font-weight: bold;
+    cursor: pointer;
+    transition: background-color 0.3s, opacity 0.3s;
+}
+
+.buttons:hover {
+    opacity: 0.7;
+}
+
+.navigation button:active {
+    opacity: 0.5;
+    transition: opacity 0.1s;
+}
+
+.sidebar {
+    display: none;
+    width: 24px;
+    z-index: 2;
+}
+
+.sidebar button {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+    height: 50%;
+    background-color: #111111;
+    border: none;
+    cursor: pointer;
+    color: #eeeeee;
+    font-size: 24px;
+    transition: background-color 0.3s;
+}
+
+.sidebar #previous {
+    border-top-left-radius: 5px;
+}
+
+
+.sidebar #next {
+    border-bottom-left-radius: 5px;
+}
+
+
+.sidebar button:nth-child(1) {
+    border-bottom: 2px solid #dbdbdb;
+}
+
+.sidebar button:hover {
+    background-color: #eeeeee;
+    color: #111111;
+}

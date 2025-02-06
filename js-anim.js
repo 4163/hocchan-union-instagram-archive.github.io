@@ -13,6 +13,12 @@ let canRandomizeEnd = true;
 // Variables to track the current screen size category
 let currentScreenCategory = 'large'; // Can be 'large', 'medium', or 'small'
 
+// Flag to control randomization for the go-to button
+let canRandomizeGoTo = true;
+
+// Variable to track the last index used
+let lastIndex = null;
+
 // Function to generate a random number within a range
 function getRandomWidth(widths) {
     return widths[Math.floor(Math.random() * widths.length)];
@@ -44,6 +50,8 @@ function getScreenCategory() {
 
 // Function to update widths dynamically
 function updateWidths() {
+    if (window.innerWidth <= 827) return; // Disable script for max-width: 827px
+
     const classPrefixes = ['a', 'b', 'c', 'd', 'e', 'f', 'g', 'h'];
     const widthsA2 = getResponsiveWidthsA2();
 
@@ -53,14 +61,27 @@ function updateWidths() {
 
         // Check if elements exist before updating their width
         if (element1 && element2) {
-            element1.style.width = getRandomWidth(widthsA1) + 'px';
-            element2.style.width = getRandomWidth(widthsA2) + 'px';
+            const parent1 = element1.parentElement;
+            const parent2 = element2.parentElement;
+
+            const randomWidth1 = getRandomWidth(widthsA1);
+            const randomWidth2 = getRandomWidth(widthsA2);
+
+            // Add an imaginary plus twelve to the width
+            const imaginaryWidth1 = randomWidth1 + 12;
+            const imaginaryWidth2 = randomWidth2 + 12;
+
+            // Set width to 100% if the imaginary width is greater than or equal to the parent's width
+            element1.style.width = (imaginaryWidth1 >= parent1.clientWidth) ? 'calc(100% - 2px)' : randomWidth1 + 'px';
+            element2.style.width = (imaginaryWidth2 >= parent2.clientWidth) ? 'calc(100% - 2px)' : randomWidth2 + 'px';
         }
     });
 }
 
 // Function to handle screen resize and update widths only if the category changes
 function handleResize() {
+    if (window.innerWidth <= 827) return; // Disable script for max-width: 827px
+
     const newScreenCategory = getScreenCategory();
     if (newScreenCategory !== currentScreenCategory) {
         currentScreenCategory = newScreenCategory;
@@ -71,46 +92,68 @@ function handleResize() {
 
 // Function to handle the beginning button click
 function handleBeginning() {
-    console.log('Beginning button clicked');
     if (canRandomizeBeginning) {
         updateWidths();
         canRandomizeBeginning = false; // Prevent further randomizing until the end button is clicked
         canRandomizeEnd = true; // Allow end button to randomize again
+        canRandomizeGoTo = true; // Allow go-to button to randomize again
     }
 }
 
 // Function to handle the end button click
 function handleEnd() {
-    console.log('End button clicked');
     if (canRandomizeEnd) {
         updateWidths();
         canRandomizeEnd = false; // Prevent further randomizing until the beginning button is clicked
         canRandomizeBeginning = true; // Allow beginning button to randomize again
+        canRandomizeGoTo = true; // Allow go-to button to randomize again
     }
 }
 
 // Function to handle the random button click
 function handleRandom() {
-    console.log('Random button clicked');
     updateWidths(); // Always allow randomization
+    canRandomizeBeginning = true; // Reset the flag for beginning button
+    canRandomizeEnd = true; // Reset the flag for end button
+    canRandomizeGoTo = true; // Allow go-to button to randomize again
+}
+
+// Function to handle the go-to button click
+function handleGoTo() {
+    const currentIndex = document.querySelector('.index').value; // Assuming the index is stored in an input field
+
+    if (currentIndex !== lastIndex) {
+        updateWidths(); // Randomize only if the index has changed
+        lastIndex = currentIndex; // Update the last index
+    }
+
+    canRandomizeGoTo = false; // Prevent further randomizing until another button is clicked
     canRandomizeBeginning = true; // Reset the flag for beginning button
     canRandomizeEnd = true; // Reset the flag for end button
 }
 
+// Add event listener to the input element with class 'index' for Enter key
+document.querySelector('.index').addEventListener('keydown', (event) => {
+    if (event.key === 'Enter') {
+        handleGoTo();
+    }
+});
+
 // Add event listeners to the buttons
-document.querySelector('.left-button').addEventListener('click', () => {
+document.querySelector('.main-nav #previous').addEventListener('click', () => {
     updateWidths();
     canRandomizeBeginning = true; // Reset the flag for beginning button
     canRandomizeEnd = true; // Reset the flag for end button
 });
-document.querySelector('.right-button').addEventListener('click', () => {
+document.querySelector('.main-nav #next').addEventListener('click', () => {
     updateWidths();
     canRandomizeBeginning = true; // Reset the flag for beginning button
     canRandomizeEnd = true; // Reset the flag for end button
 });
-document.querySelector('.beginning').addEventListener('click', handleBeginning);
-document.querySelector('.end').addEventListener('click', handleEnd);
-document.querySelector('.random').addEventListener('click', handleRandom);
+document.querySelector('#beginning').addEventListener('click', handleBeginning);
+document.querySelector('#end').addEventListener('click', handleEnd);
+document.querySelector('#random').addEventListener('click', handleRandom);
+document.querySelector('#go-to').addEventListener('click', handleGoTo);
 
 // Update widths on page load and when the window crosses a breakpoint
 window.addEventListener('load', updateWidths);

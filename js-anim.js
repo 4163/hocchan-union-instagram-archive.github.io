@@ -59,21 +59,37 @@ function updateWidths() {
         const element1 = document.querySelector(`.${prefix}1`);
         const element2 = document.querySelector(`.${prefix}2`);
 
-        // Check if elements exist before updating their width
         if (element1 && element2) {
-            const parent1 = element1.parentElement;
-            const parent2 = element2.parentElement;
-
             const randomWidth1 = getRandomWidth(widthsA1);
             const randomWidth2 = getRandomWidth(widthsA2);
 
-            // Add an imaginary plus twelve to the width
-            const imaginaryWidth1 = randomWidth1 + 12;
-            const imaginaryWidth2 = randomWidth2 + 12;
+            element1.dataset.width = randomWidth1;
+            element2.dataset.width = randomWidth2;
+        }
+    });
+    adjustWidths();
+}
 
-            // Set width to 100% if the imaginary width is greater than or equal to the parent's width
-            element1.style.width = (imaginaryWidth1 >= parent1.clientWidth) ? 'calc(100% - 2px)' : randomWidth1 + 'px';
-            element2.style.width = (imaginaryWidth2 >= parent2.clientWidth) ? 'calc(100% - 2px)' : randomWidth2 + 'px';
+// Function to adjust widths on resize
+function adjustWidths() {
+    const classPrefixes = ['a', 'b', 'c', 'd', 'e', 'f', 'g', 'h'];
+    
+    classPrefixes.forEach(prefix => {
+        const element1 = document.querySelector(`.${prefix}1`);
+        const element2 = document.querySelector(`.${prefix}2`);
+
+        if (element1 && element2) {
+            const parent1 = element1.parentElement;
+            const parent2 = element2.parentElement;
+            
+            const width1 = parseInt(element1.dataset.width, 10) || 0;
+            const width2 = parseInt(element2.dataset.width, 10) || 0;
+            
+            const imaginaryWidth1 = width1 + 12;
+            const imaginaryWidth2 = width2 + 12;
+            
+            element1.style.width = (imaginaryWidth1 >= parent1.clientWidth) ? 'calc(100% - 2px)' : width1 + 'px';
+            element2.style.width = (imaginaryWidth2 >= parent2.clientWidth) ? 'calc(100% - 2px)' : width2 + 'px';
         }
     });
 }
@@ -81,14 +97,19 @@ function updateWidths() {
 // Function to handle screen resize and update widths only if the category changes
 function handleResize() {
     if (window.innerWidth <= 827) return; // Disable script for max-width: 827px
-
+    
     const newScreenCategory = getScreenCategory();
     if (newScreenCategory !== currentScreenCategory) {
         currentScreenCategory = newScreenCategory;
         console.log(`Screen category changed to: ${currentScreenCategory}`);
         updateWidths();
     }
+    adjustWidths();
 }
+
+// Update widths on page load and adjust on window resize
+window.addEventListener('load', updateWidths);
+window.addEventListener('resize', handleResize);
 
 // Function to handle the beginning button click
 function handleBeginning() {

@@ -146,11 +146,16 @@
         min-width: 158.34px;
         aspect-ratio: 405.2 / 405.2;
         border-radius: 0;
-        background-color: transparent;
         box-shadow: none;
     }
     .media {
         background-color: transparent;
+    }
+    .media img,
+    .media video {
+        width: unset;
+        height: unset;
+        object-fit: unset;
     }
     .content-island {
         position: fixed;

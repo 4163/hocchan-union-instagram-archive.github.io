@@ -92,15 +92,16 @@ lazy loading images and A LOT of optimizations on 02/02/2024 - 02/06/2024 via gi
 			<div>
 				<div>
 					<button id="go-to" class="buttons">Go to</button>
-					<input class="index buttons" type="number" placeholder="1 - 684"></input>
+					<input class="index buttons"  max="684" type="number" placeholder="1 - 684"></input>
 				</div>
 				<div class="current-index">Current Index: <span id="current-index">{}</span></div>
 			</div>
-			<script defer>
-				document.addEventListener('DOMContentLoaded', function() {
+			<script>
+				document.addEventListener('DOMContentLoaded', function () {
 					const inputElement = document.querySelector('.index');
 					const placeholderText = inputElement.getAttribute('placeholder');
 
+					// Create a temporary span to measure placeholder width
 					const tempElement = document.createElement('span');
 					tempElement.style.visibility = 'hidden';
 					tempElement.style.position = 'absolute';
@@ -113,8 +114,14 @@ lazy loading images and A LOT of optimizations on 02/02/2024 - 02/06/2024 via gi
 					document.body.removeChild(tempElement);
 
 					console.log(`Input width: ${placeholderWidth}px`);
-
 					inputElement.style.width = `${placeholderWidth}px`;
+
+					// Restrict input to max 3 digits
+					inputElement.addEventListener("input", function () {
+					if (this.value.length > 3) {
+						this.value = this.value.slice(0, 3);
+					}
+					});
 				});
 			</script>
 			<div class="main-nav">

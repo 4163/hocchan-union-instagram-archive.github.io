@@ -300,11 +300,24 @@ document.addEventListener('DOMContentLoaded', function () {
     preloadAdjacentMedia(currentIndex);
   }
 
+  function preloadAffixedMedia(index) {
+    const timestamp = timestamps[index];
+    const affixItems = Array.from(mediaItems).filter(item => item.classList.contains(timestamp.className) && item.dataset.affix);
+    affixItems.forEach(item => {
+      if (item.dataset.src) {
+        item.src = item.dataset.src;
+        item.removeAttribute('data-src');
+      }
+    });
+  }
+
   // Event listeners for buttons
   document.querySelector('#random').addEventListener('click', function () {
     currentIndex = preGeneratedRandomIndex;
     localStorage.setItem('currentIndex', currentIndex);
     updateMedia();
+    updateAllPositions();
+    preloadAffixedMedia(currentIndex);
 
     preGeneratedRandomIndex = Math.floor(Math.random() * timestamps.length);
     preloadMediaAtIndex(preGeneratedRandomIndex);
@@ -314,24 +327,32 @@ document.addEventListener('DOMContentLoaded', function () {
     currentIndex = (currentIndex + 1) % timestamps.length;
     localStorage.setItem('currentIndex', currentIndex);
     updateMedia();
+    updateAllPositions();
+    preloadAffixedMedia(currentIndex);
   });
 
   document.querySelector('.main-nav #previous').addEventListener('click', function () {
     currentIndex = (currentIndex - 1 + timestamps.length) % timestamps.length;
     localStorage.setItem('currentIndex', currentIndex);
     updateMedia();
+    updateAllPositions();
+    preloadAffixedMedia(currentIndex);
   });
 
   document.querySelector('#beginning').addEventListener('click', function () {
     currentIndex = 0;
     localStorage.setItem('currentIndex', currentIndex);
     updateMedia();
+    updateAllPositions();
+    preloadAffixedMedia(currentIndex);
   });
 
   document.querySelector('#end').addEventListener('click', function () {
     currentIndex = timestamps.length - 1;
     localStorage.setItem('currentIndex', currentIndex);
     updateMedia();
+    updateAllPositions();
+    preloadAffixedMedia(currentIndex);
   });
 
   document.querySelector('.sidebar #next').addEventListener('click', function () {
@@ -405,6 +426,8 @@ document.addEventListener('DOMContentLoaded', function () {
       localStorage.setItem('currentIndex', currentIndex);
       console.log(`Go-to: ${currentIndex + 1}`); // Log current index on go-to button click
       updateMedia();
+      updateAllPositions();
+      preloadAffixedMedia(currentIndex);
     }
   });
 
@@ -418,6 +441,8 @@ document.addEventListener('DOMContentLoaded', function () {
         localStorage.setItem('currentIndex', currentIndex);
         console.log(`Key pressed. Index: ${currentIndex + 1}`); // Log current index on enter key press
         updateMedia();
+        updateAllPositions();
+        preloadAffixedMedia(currentIndex);
       }
     }
   });

@@ -8,27 +8,18 @@ document.addEventListener('DOMContentLoaded', function () {
   const buttonSidebar = document.querySelector('.sidebar');
   let currentIndex = parseInt(localStorage.getItem('currentIndex')) || 0;
 
+  const mediaOffset = 3; // Define the range of adjacent media to preload
+
   // Step 1: Randomize a pre-defined random index at initial page load
   let preGeneratedRandomIndex = Math.floor(Math.random() * timestamps.length);
 
-  // Step 2: Pre-load ONLY the random index
-  preloadMediaAtIndex(preGeneratedRandomIndex);
+  // Preload the first, last, and pre-defined random index
+  preloadMediaAtIndex(0); // First media item
+  preloadMediaAtIndex(timestamps.length - 1); // Last media item
+  preloadMediaAtIndex(preGeneratedRandomIndex); // Pre-defined random index
 
-  document.querySelector('#random').addEventListener('click', function () {
-    // Step 3: Jump to the pre-defined random index
-    currentIndex = preGeneratedRandomIndex;
-    localStorage.setItem('currentIndex', currentIndex);
-    updateMedia();
-
-    // Preload the media right next to the current index (mediaOffset)
-    preloadAdjacentMedia(currentIndex);
-
-    // Step 4: Re-randomize the pre-defined random index
-    preGeneratedRandomIndex = Math.floor(Math.random() * timestamps.length);
-
-    // Step 5: Repeat from step 2
-    preloadMediaAtIndex(preGeneratedRandomIndex);
-  });
+  // Preload adjacent media around the current active index
+  preloadAdjacentMedia(currentIndex);
 
   function preloadMediaAtIndex(index) {
     if (index >= 0 && index < timestamps.length) {
@@ -53,31 +44,12 @@ document.addEventListener('DOMContentLoaded', function () {
   }
 
   function preloadAdjacentMedia(index) {
-    const preloadRange = (start, end) => {
-      for (let i = start; i <= end; i++) {
-        const idx = (i + timestamps.length) % timestamps.length;
-        const timestamp = timestamps[idx];
-        const mediaClass = timestamp.className;
-        const mediaItem = Array.from(mediaItems).find(media => media.classList.contains(mediaClass) && !media.classList.contains('sub-post'));
-
-        if (mediaItem) {
-          if (mediaItem.tagName.toLowerCase() === 'video') {
-            const source = mediaItem.querySelector('source[data-src]');
-            if (source && source.dataset.src) {
-              source.src = source.dataset.src;
-              source.removeAttribute('data-src');
-              mediaItem.load(); // Load the video after setting the src
-            }
-          } else if (mediaItem.dataset.src) {
-            mediaItem.src = mediaItem.dataset.src;
-            mediaItem.removeAttribute('data-src');
-          }
-        }
-      }
-    };
-
-    // Preload range from index - mediaOffset to index + mediaOffset
-    preloadRange(index - mediaOffset, index + mediaOffset);
+    const start = index - mediaOffset;
+    const end = index + mediaOffset;
+    for (let i = start; i <= end; i++) {
+      const idx = (i + timestamps.length) % timestamps.length; // Ensure wrap-around
+      preloadMediaAtIndex(idx);
+    }
   }
 
   console.log(`Page loaded. Index: ${currentIndex + 1}`); // Log current index on page load
@@ -92,8 +64,6 @@ document.addEventListener('DOMContentLoaded', function () {
   });
 
   let mediaHeight, mediaWidth;
-
-  const mediaOffset = 3; // Configurable offset
 
   function calculateMediaDistanceBottom() {
     const mediaContainer = document.querySelector('.media');
@@ -326,81 +296,42 @@ document.addEventListener('DOMContentLoaded', function () {
       }
     }
   
-    // Load adjacent media items
-    const prevIndex = (currentIndex - mediaOffset + timestamps.length) % timestamps.length;
-    const nextIndex = (currentIndex + mediaOffset) % timestamps.length;
-  
-    [currentIndex, prevIndex, nextIndex].forEach(index => {
-      const timestamp = timestamps[index];
-      const mediaClass = timestamp.className;
-      const mediaItem = Array.from(mediaItems).find(media => media.classList.contains(mediaClass) && !media.classList.contains('sub-post'));
-  
-      if (mediaItem && mediaItem.dataset.src) {
-        mediaItem.src = mediaItem.dataset.src;
-        mediaItem.removeAttribute('data-src');
-      }
-    });
-  
-    // Preload all affixed media for the current index
-    const affixItems = Array.from(mediaItems).filter(item => item.classList.contains(currentTimestamp.className) && item.dataset.affix);
-    affixItems.forEach(item => {
-      if (item.dataset.src) {
-        item.src = item.dataset.src;
-        item.removeAttribute('data-src');
-      }
-    });
-  
-    updateAllPositions();
+    // Preload adjacent media around the current index
+    preloadAdjacentMedia(currentIndex);
   }
 
-  // Call preloadAdjacentMedia on initial load and whenever the media is updated
-  preloadAdjacentMedia(currentIndex);
-  updateMedia();
+  // Event listeners for buttons
+  document.querySelector('#random').addEventListener('click', function () {
+    currentIndex = preGeneratedRandomIndex;
+    localStorage.setItem('currentIndex', currentIndex);
+    updateMedia();
 
-  function scrollToMiddle() {
-    const middlePosition = Math.max(0, document.body.scrollHeight / 2 - window.innerHeight / 2);
-
-    window.scrollTo({
-      top: middlePosition,
-      behavior: 'smooth',
-    });
-
-    updateAllPositions(); // Ensure adjustments are applied after scrolling
-  }
-
-  // Delay invocation to ensure page layout is stable
-  setTimeout(() => {
-    scrollToMiddle();
-  }, 100);
+    preGeneratedRandomIndex = Math.floor(Math.random() * timestamps.length);
+    preloadMediaAtIndex(preGeneratedRandomIndex);
+  });
 
   document.querySelector('.main-nav #next').addEventListener('click', function () {
     currentIndex = (currentIndex + 1) % timestamps.length;
     localStorage.setItem('currentIndex', currentIndex);
-    console.log(`Next. Index: ${currentIndex + 1}`); // Log current index on right button click
     updateMedia();
   });
 
   document.querySelector('.main-nav #previous').addEventListener('click', function () {
     currentIndex = (currentIndex - 1 + timestamps.length) % timestamps.length;
     localStorage.setItem('currentIndex', currentIndex);
-    console.log(`Previous. Index: ${currentIndex + 1}`); // Log current index on left button click
     updateMedia();
   });
 
   document.querySelector('#beginning').addEventListener('click', function () {
     currentIndex = 0;
     localStorage.setItem('currentIndex', currentIndex);
-    console.log(`Beginning. Index: ${currentIndex + 1}`); // Log current index on beginning button click
     updateMedia();
-    preloadAdjacentMedia(currentIndex); // Preload range for the beginning
   });
 
   document.querySelector('#end').addEventListener('click', function () {
     currentIndex = timestamps.length - 1;
     localStorage.setItem('currentIndex', currentIndex);
-    console.log(`End. Index: ${currentIndex + 1}`); // Log current index on end button click
     updateMedia();
-    preloadAdjacentMedia(currentIndex); // Preload range for the end
   });
 
   document.querySelector('.sidebar #next').addEventListener('click', function () {
@@ -474,7 +405,6 @@ document.addEventListener('DOMContentLoaded', function () {
       localStorage.setItem('currentIndex', currentIndex);
       console.log(`Go-to: ${currentIndex + 1}`); // Log current index on go-to button click
       updateMedia();
-      preloadAdjacentMedia(currentIndex); // Preload range for the specified index
     }
   });
 
@@ -488,7 +418,6 @@ document.addEventListener('DOMContentLoaded', function () {
         localStorage.setItem('currentIndex', currentIndex);
         console.log(`Key pressed. Index: ${currentIndex + 1}`); // Log current index on enter key press
         updateMedia();
-        preloadAdjacentMedia(currentIndex); // Preload range for the specified index
       }
     }
   });
@@ -496,7 +425,6 @@ document.addEventListener('DOMContentLoaded', function () {
   window.addEventListener("resize", updateAllPositions);
   window.addEventListener("scroll", updateAllPositions); // Trigger on scroll
   updateMedia();
-  scrollToMiddle();
 
   // Call updateFooterWidth on page load
   updateFooterWidth();

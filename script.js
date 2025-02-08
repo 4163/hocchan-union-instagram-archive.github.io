@@ -8,7 +8,77 @@ document.addEventListener('DOMContentLoaded', function () {
   const buttonSidebar = document.querySelector('.sidebar');
   let currentIndex = parseInt(localStorage.getItem('currentIndex')) || 0;
 
-  let preGeneratedRandomIndex = Math.floor(Math.random() * timestamps.length); // Pre-generate a random index
+  // Step 1: Randomize a pre-defined random index at initial page load
+  let preGeneratedRandomIndex = Math.floor(Math.random() * timestamps.length);
+
+  // Step 2: Pre-load ONLY the random index
+  preloadMediaAtIndex(preGeneratedRandomIndex);
+
+  document.querySelector('#random').addEventListener('click', function () {
+    // Step 3: Jump to the pre-defined random index
+    currentIndex = preGeneratedRandomIndex;
+    localStorage.setItem('currentIndex', currentIndex);
+    updateMedia();
+
+    // Preload the media right next to the current index (mediaOffset)
+    preloadAdjacentMedia(currentIndex);
+
+    // Step 4: Re-randomize the pre-defined random index
+    preGeneratedRandomIndex = Math.floor(Math.random() * timestamps.length);
+
+    // Step 5: Repeat from step 2
+    preloadMediaAtIndex(preGeneratedRandomIndex);
+  });
+
+  function preloadMediaAtIndex(index) {
+    if (index >= 0 && index < timestamps.length) {
+      const timestamp = timestamps[index];
+      const mediaClass = timestamp.className;
+      const mediaItem = Array.from(mediaItems).find(media => media.classList.contains(mediaClass) && !media.classList.contains('sub-post'));
+
+      if (mediaItem) {
+        if (mediaItem.tagName.toLowerCase() === 'video') {
+          const source = mediaItem.querySelector('source[data-src]');
+          if (source && source.dataset.src) {
+            source.src = source.dataset.src;
+            source.removeAttribute('data-src');
+            mediaItem.load(); // Load the video after setting the src
+          }
+        } else if (mediaItem.dataset.src) {
+          mediaItem.src = mediaItem.dataset.src;
+          mediaItem.removeAttribute('data-src');
+        }
+      }
+    }
+  }
+
+  function preloadAdjacentMedia(index) {
+    const preloadRange = (start, end) => {
+      for (let i = start; i <= end; i++) {
+        const idx = (i + timestamps.length) % timestamps.length;
+        const timestamp = timestamps[idx];
+        const mediaClass = timestamp.className;
+        const mediaItem = Array.from(mediaItems).find(media => media.classList.contains(mediaClass) && !media.classList.contains('sub-post'));
+
+        if (mediaItem) {
+          if (mediaItem.tagName.toLowerCase() === 'video') {
+            const source = mediaItem.querySelector('source[data-src]');
+            if (source && source.dataset.src) {
+              source.src = source.dataset.src;
+              source.removeAttribute('data-src');
+              mediaItem.load(); // Load the video after setting the src
+            }
+          } else if (mediaItem.dataset.src) {
+            mediaItem.src = mediaItem.dataset.src;
+            mediaItem.removeAttribute('data-src');
+          }
+        }
+      }
+    };
+
+    // Preload range from index - mediaOffset to index + mediaOffset
+    preloadRange(index - mediaOffset, index + mediaOffset);
+  }
 
   console.log(`Page loaded. Index: ${currentIndex + 1}`); // Log current index on page load
 
@@ -283,34 +353,6 @@ document.addEventListener('DOMContentLoaded', function () {
     updateAllPositions();
   }
 
-  function preloadAdjacentMedia(index) {
-    const preloadRange = (start, end) => {
-      for (let i = start; i <= end; i++) {
-        const idx = (i + timestamps.length) % timestamps.length;
-        const timestamp = timestamps[idx];
-        const mediaClass = timestamp.className;
-        const mediaItem = Array.from(mediaItems).find(media => media.classList.contains(mediaClass) && !media.classList.contains('sub-post'));
-
-        if (mediaItem) {
-          if (mediaItem.tagName.toLowerCase() === 'video') {
-            const source = mediaItem.querySelector('source[data-src]');
-            if (source && source.dataset.src) {
-              source.src = source.dataset.src;
-              source.removeAttribute('data-src');
-              mediaItem.load(); // Load the video after setting the src
-            }
-          } else if (mediaItem.dataset.src) {
-            mediaItem.src = mediaItem.dataset.src;
-            mediaItem.removeAttribute('data-src');
-          }
-        }
-      }
-    };
-
-    // Preload range from index - mediaOffset to index + mediaOffset
-    preloadRange(index - mediaOffset, index + mediaOffset);
-  }
-  
   // Call preloadAdjacentMedia on initial load and whenever the media is updated
   preloadAdjacentMedia(currentIndex);
   updateMedia();
@@ -359,17 +401,6 @@ document.addEventListener('DOMContentLoaded', function () {
     console.log(`End. Index: ${currentIndex + 1}`); // Log current index on end button click
     updateMedia();
     preloadAdjacentMedia(currentIndex); // Preload range for the end
-  });
-
-  document.querySelector('#random').addEventListener('click', function () {
-    currentIndex = preGeneratedRandomIndex; // Use the pre-generated random index
-    localStorage.setItem('currentIndex', currentIndex);
-    console.log(`Random. Index: ${currentIndex + 1}`); // Log current index on random button click
-    updateMedia();
-
-    // Generate a new random index for the next use
-    preGeneratedRandomIndex = Math.floor(Math.random() * timestamps.length);
-    preloadAdjacentMedia(currentIndex); // Preload the new random index
   });
 
   document.querySelector('.sidebar #next').addEventListener('click', function () {
@@ -523,28 +554,6 @@ document.querySelectorAll('.media img, .media video').forEach(media => {
 
   // Show buttonSidebar after all media items are preloaded
   // buttonSidebar.style.display = 'block';
-
-  function preloadMediaAtIndex(index) {
-    if (index >= 0 && index < timestamps.length) {
-      const timestamp = timestamps[index];
-      const mediaClass = timestamp.className;
-      const mediaItem = Array.from(mediaItems).find(media => media.classList.contains(mediaClass) && !media.classList.contains('sub-post'));
-
-      if (mediaItem) {
-        if (mediaItem.tagName.toLowerCase() === 'video') {
-          const source = mediaItem.querySelector('source[data-src]');
-          if (source && source.dataset.src) {
-            source.src = source.dataset.src;
-            source.removeAttribute('data-src');
-            mediaItem.load(); // Load the video after setting the src
-          }
-        } else if (mediaItem.dataset.src) {
-          mediaItem.src = mediaItem.dataset.src;
-          mediaItem.removeAttribute('data-src');
-        }
-      }
-    }
-  }
 
   // Add event listener to the input field
   const indexInput = document.querySelector('.index');

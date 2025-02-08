@@ -54,9 +54,6 @@ document.addEventListener('DOMContentLoaded', function () {
 
   console.log(`Page loaded. Index: ${currentIndex + 1}`); // Log current index on page load
 
-  // Hide buttonSidebar initially
-  buttonSidebar.style.display = 'none';
-
   const timestampMediaMap = {};
   timestamps.forEach((timestamp, index) => {
     const className = timestamp.className;
@@ -266,7 +263,7 @@ document.addEventListener('DOMContentLoaded', function () {
       if (affixItems.length > 0) {
         buttonSidebar.style.display = 'block';
       } else {
-        buttonSidebar.style.display = 'none';
+        buttonSidebar.removeAttribute('style');
       }
   
       const timestampClass = currentTimestamp.className;
@@ -290,7 +287,7 @@ document.addEventListener('DOMContentLoaded', function () {
   
       if (postContentElements.length > 0) {
         postContentElements.forEach(content => content.style.display = 'block');
-        noContentElement.style.display = 'none';
+        noContentElement.removeAttribute('style');
       } else {
         noContentElement.style.display = 'block';
       }
@@ -371,7 +368,7 @@ document.addEventListener('DOMContentLoaded', function () {
         item.pause();
         item.currentTime = 0;
       }
-      item.style.display = 'none';
+      item.removeAttribute('style');
     });
 
     const nextMedia = affixItems[currentAffixIndex];
@@ -402,7 +399,7 @@ document.addEventListener('DOMContentLoaded', function () {
         item.pause();
         item.currentTime = 0;
       }
-      item.style.display = 'none';
+      item.removeAttribute('style');
     });
 
     const prevMedia = affixItems[currentAffixIndex];
@@ -504,9 +501,6 @@ document.querySelectorAll('.media img, .media video').forEach(media => {
       item.removeAttribute('data-src');
     }
   });
-
-  // Show buttonSidebar after all media items are preloaded
-  // buttonSidebar.style.display = 'block';
 
   // Add event listener to the input field
   const indexInput = document.querySelector('.index');

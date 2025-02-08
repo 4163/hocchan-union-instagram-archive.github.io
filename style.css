@@ -190,6 +190,11 @@ a {
     font-size: 18.5px;
 }
 
+.post a:has(.username):hover {
+    width: fit-content;
+    color: #8d8d8d;
+}
+
 .posts-comments {
     height: 15px;
     background-color: #efefef;

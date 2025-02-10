@@ -1,0 +1,4 @@
+[[redirects]]
+  from = "/index.html"
+  to = "/archive/home.html"
+  status = 301

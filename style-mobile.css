@@ -36,7 +36,9 @@
     .navigation button:active {
         background-color: #acacac;
     }
-
+    .sidebar {
+        -webkit-tap-highlight-color: transparent;
+    }
     .sidebar button:hover {
         background-color: #111111;
         color: #eeeeee;
@@ -55,7 +57,7 @@
 
 @media (max-width: 1563px) {
     .background {
-        background: url('bgs/1563.png') no-repeat center top;
+        background: url('bg/1563.png') no-repeat center top;
         background-size: cover;
     }
     .pfp {
@@ -94,7 +96,7 @@
 
 @media (max-width: 1208px) {
     .background {
-        background: url('bgs/1263.png') no-repeat center top;
+        background: url('bg/1263.png') no-repeat center top;
         background-size: cover;
     }
     .profile {
@@ -138,7 +140,7 @@
         transition: opacity 0.5s ease-in-out;
     }
     .background {
-        background: url('bgs/767.png') no-repeat center top;
+        background: url('bg/767.png') no-repeat center top;
         background-size: cover;
     }
     .main {

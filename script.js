@@ -444,6 +444,21 @@ document.addEventListener('DOMContentLoaded', function () {
     }
   });
 
+  // Add keyboard event listener for left/right arrow keys and additional shortcuts
+  document.addEventListener('keydown', function(event) {
+    if (event.key === 'ArrowLeft') {
+      document.querySelector('.main-nav #previous').click();
+    } else if (event.key === 'ArrowRight') {
+      document.querySelector('.main-nav #next').click();
+    } else if (event.key.toLowerCase() === 's') {
+      document.querySelector('#random').click();
+    } else if (event.key.toLowerCase() === 'a') {
+      document.querySelector('#beginning').click();
+    } else if (event.key.toLowerCase() === 'd') {
+      document.querySelector('#end').click();
+    }
+  });
+
   window.addEventListener("resize", updateAllPositions);
   window.addEventListener("scroll", updateAllPositions); // Trigger on scroll
   updateMedia();

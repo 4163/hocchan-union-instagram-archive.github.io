@@ -47,7 +47,7 @@ a {
     right: 0;
     bottom: 0;
     left: 0;
-    background: url('bgs/1920.png') no-repeat center top;
+    background: url('bg/1920.png') no-repeat center top;
     background-size: cover;
     opacity: 0;
     filter: brightness(35%);
@@ -106,6 +106,7 @@ a {
     border-left: 2px solid #efefef;
     box-sizing: border-box;
     background-color: #ffffff;
+    z-index: 3;
 }
 
 /* Profile =================================================================================================== */
@@ -157,6 +158,7 @@ a {
 /* =========================================================================================================== */
 
 .body {
+    height: 100%;
     overflow-x: hidden;
     overflow-y: scroll;
 }
@@ -271,6 +273,7 @@ a {
     width: fit-content;
     gap: 5px;
     font-size: 14px;
+    / * font-weight: bold; */
     cursor: pointer;
 }
 
@@ -387,6 +390,10 @@ div:has(> .index) {
 
 .index.buttons:hover {
     opacity: unset;
+}
+
+.index.buttons:focus-visible {
+    outline-color: #f91880;
 }
 
 /* Used to hide the mobile elements on desktop */

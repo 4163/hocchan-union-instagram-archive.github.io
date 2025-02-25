@@ -52,7 +52,7 @@ function getScreenCategory() {
 function updateWidths() {
     if (window.innerWidth <= 827) return; // Disable script for max-width: 827px
 
-    const classPrefixes = ['a', 'b', 'c', 'd', 'e', 'f', 'g', 'h'];
+    const classPrefixes = ['a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i'];
     const widthsA2 = getResponsiveWidthsA2();
 
     classPrefixes.forEach(prefix => {
